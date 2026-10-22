@@ -1,6 +1,18 @@
 # Scheda D&D — PWA
 
-Scheda personaggio per D&D, ora installabile come app sul telefono via web.
+Scheda personaggio per D&D, installabile come app sul telefono via web.
+
+## Novità v9
+
+- **Sblocco manuale dal Master**: nel pannello "Combattimento live", sotto l'elenco giocatori, ora c'è un tasto **Sblocca** per ogni giocatore e un tasto **Sblocca tutte le schede**. Usa lo stesso canale dello sblocco automatico (fin scontro), quindi se quello automatico non arriva al giocatore, il Master lo forza con un tap: il giocatore riceve la notifica "Sbloccata" e la sua scheda si sblocca subito (funziona anche se il giocatore era offline: appena si ricollega lo snapshot lo sblocca).
+- **Aggiornamenti affidabili**: nuovo service worker "network-first" — l'app controlla GitHub ad ogni apertura/ritorno in primo piano; se c'è una versione nuova compare il banner **"Aggiornamento disponibile"** con il tasto *Aggiorna ora* (niente più cache bloccata dopo aver sostituito i file). In basso a destra vedi sempre la **versione** installata (es. "Scheda D&D v9").
+
+## Pubblicare una nuova versione (importante!)
+
+1. Modifica i file che ti servono.
+2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='9'</script>` e il `?v=9` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
+3. Se hai modificato anche `sw.js`, aumenta `CACHE_VERSION` in cima a `sw.js` (es. `'2'` → `'3'`).
+4. Commit e push su GitHub: i dispositivi si aggiornano da soli entro la prossima apertura (GitHub Pages aggiorna i file in ~10 minuti).
 
 ## Pubblicare su GitHub Pages
 
@@ -29,9 +41,9 @@ Le impostazioni (ruolo MQTT, connessione live) restano salvate nel browser come 
 
 ## Struttura file
 
-- `index.html` — interfaccia (identica all'originale)
-- `app.js` — tutta la logica (byte-identica all'originale, caricata in `defer`)
+- `index.html` — interfaccia + banner aggiornamenti + versione
+- `app.js` — tutta la logica (originale + sblocco manuale Master)
 - `style.css` — stili originali
 - `manifest.json` — metadati PWA (start_url e scope relativi: funziona in sottocartella)
-- `sw.js` — service worker per la cache offline
+- `sw.js` — service worker network-first con versionamento
 - `icons/` — icone 192/512 px + apple-touch-icon

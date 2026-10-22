@@ -53,8 +53,29 @@ label{display:block;margin:8px 0;color:var(--mu);font-size:.9em}input[type=check
 
 </style></head><body><div id="app"></div><div id="tt"></div><div id="mo"></div>
 
-<script src="app.js" defer></script>
+<script>window.APP_VER='9';</script>
+<script src="app.js?v=9" defer></script>
 <script>
-if('serviceWorker' in navigator){addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});}
+(function(){
+var v=window.APP_VER||'';
+function chip(){try{var d=document.createElement('div');d.id='appver';d.textContent='Scheda D&D v'+v;d.style.cssText='position:fixed;right:10px;bottom:6px;font:11px system-ui,sans-serif;color:var(--mu,#667085);opacity:.75;pointer-events:none;z-index:9';document.body.appendChild(d)}catch(e){}}
+if(document.readyState=='loading')addEventListener('DOMContentLoaded',chip);else chip();
+var bn=document.createElement('div');bn.style.cssText='display:none;position:fixed;left:10px;right:10px;bottom:56px;z-index:99;background:#2a6f69;color:#fff;padding:10px 12px;border-radius:10px;font:14px system-ui,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.3)';var bt=document.createElement('span');bt.textContent='Aggiornamento disponibile';bn.appendChild(bt);var b=document.createElement('button');b.textContent='Aggiorna ora';b.style.cssText='margin-left:10px;background:#fff;color:#2a6f69;border:0;border-radius:8px;padding:6px 12px;font-weight:600;cursor:pointer';bn.appendChild(b);document.body.appendChild(bn);
+var nw=null,refreshing=false,hadCtrl=false;
+function show(w){nw=w;bn.style.display='block'}
+b.onclick=function(){if(nw)try{nw.postMessage('SKIP_WAITING')}catch(e){}bn.style.display='none'};
+if('serviceWorker' in navigator){
+ try{
+  hadCtrl=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){if(!hadCtrl){hadCtrl=true;return}if(refreshing)return;refreshing=true;location.reload()});
+  var reg=null;
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){reg=r;r.addEventListener('updatefound',function(){var w=r.installing;if(!w)return;w.addEventListener('statechange',function(){if(w.state==='installed'&&navigator.serviceWorker.controller)show(w)})})}).catch(function(){});
+  var upd=function(){if(reg)try{reg.update()}catch(e){}};
+  addEventListener('load',upd);
+  addEventListener('focus',upd);
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState=='visible')upd()});
+ }catch(e){}
+}
+})();
 </script>
 </body></html>
