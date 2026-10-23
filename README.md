@@ -2,6 +2,14 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v13
+
+- **Sicurezza dei file importati e del live**: un file o una scheda ricevuta non possono più eseguire codice (testi con apici o entità HTML nei tasti). Le schede arrivano con tipi e limiti sistemati (armi, incantesimi, oggetti, armatura, caratteristiche, livello), quindi una scheda malformata non blocca più l'app.
+- **Live più robusto**: i dati del Master vengono controllati prima di essere mostrati; i messaggi vuoti (che chiunque sul broker può mandare) non espellono più il giocatore e non nascondono lo scontro: rimozione e fine condivisione ora sono messaggi cifrati; le accettazioni vecchie ripubblicate non vengono più accettate.
+- **Messaggi del Master firmati**: il Master firma scontro, accettazioni, ricompense, sblocchi e rimozioni. Il link ora ha in fondo un pezzo in più (l'impronta della chiave del Master): con quel link il giocatore accetta solo i messaggi firmati dal Master, quindi un altro giocatore con il link non può più fingersi Master. Nel live compare "Master verificato" e, se arrivano messaggi falsi, quanti ne sono stati ignorati. I link vecchi funzionano ancora: il giocatore memorizza la chiave del Master al primo messaggio firmato, ma per la protezione piena conviene ridare ai giocatori il link nuovo.
+- **Mai più schermo bianco**: se una schermata ha dati rovinati compare un avviso con "Torna all'elenco"; le schede danneggiate sono segnalate nell'elenco e si possono eliminare.
+- **Salvataggio fallito**: se la memoria del browser è piena compare un avviso invece di perdere i dati in silenzio.
+
 ## Novità v12
 
 - **Armi riordinate**: un solo riquadro "Armi" con, per ogni arma, nome, tiro per colpire e danno in vista e i tasti Attacco, Danno e Modifica. Aggiungere un'arma (dalla lista o personalizzata) sta in "+ Aggiungi arma" in fondo allo stesso riquadro; Danni extra è in alto. Sotto: Armatura e scudo, poi il Carico. Elimina è dentro Modifica (con conferma).
@@ -42,7 +50,7 @@ Scheda personaggio per D&D, installabile come app sul telefono via web.
 ## Pubblicare una nuova versione (importante!)
 
 1. Modifica i file che ti servono.
-2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='12'</script>` e il `?v=12` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
+2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='13'</script>` e il `?v=13` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
 3. Se hai modificato anche `sw.js`, aumenta `CACHE_VERSION` in cima a `sw.js` (es. `'2'` → `'3'`).
 4. Commit e push su GitHub: i dispositivi si aggiornano da soli entro la prossima apertura (GitHub Pages aggiorna i file in ~10 minuti).
 
