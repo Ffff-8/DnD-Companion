@@ -2,6 +2,17 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v12
+
+- **Armi riordinate**: un solo riquadro "Armi" con, per ogni arma, nome, tiro per colpire e danno in vista e i tasti Attacco, Danno e Modifica. Aggiungere un'arma (dalla lista o personalizzata) sta in "+ Aggiungi arma" in fondo allo stesso riquadro; Danni extra è in alto. Sotto: Armatura e scudo, poi il Carico. Elimina è dentro Modifica (con conferma).
+- **Magie riordinate**: in cima CD, attacco e slot. Gli incantesimi sono raggruppati per livello (con gli slot liberi di quel livello), ognuno in una riga compatta con il tasto **Lancia** sempre visibile: tocca il nome per aprire dettagli, effetti, Attacco/Danno/Cura (solo se servono) e Modifica. Elimina è dentro Modifica. In fondo: Aggiungi incantesimo, Limiti e Bonus agli incantesimi.
+- **Durate: 1 minuto = 1 round.** Ira 10 round, Magia innata 1 round, timer a mano in minuti (round) o ore. I timer già attivi di Ira e Magia innata vengono convertiti da soli.
+- **Rientro nel live**:
+  - il giocatore che esce durante uno scontro trova sulla scheda il tasto **Rientra nel live**;
+  - durante lo scontro l'identità del giocatore è quella decisa dal Master all'accettazione (prima poteva restare un "Chi sei?" vecchio, che bloccava tiri e aggiornamenti dei PF); il Master riconosce i tiri dal codice del giocatore e, se serve, gli rimanda l'identità giusta;
+  - se il Master ha tolto il giocatore dallo scontro, al rientro la scheda si sblocca e viene reinviata in automatico: il Master la riaccetta e i PF tornano a sincronizzarsi;
+  - toccare "Chi sei?" con la scheda bloccata ora mostra un messaggio invece di non fare nulla.
+
 ## Novità v11
 
 - **Modifica oggetti**: corretto il salvataggio (il modulo di modifica usava gli stessi nomi dei campi del modulo di aggiunta).
@@ -31,7 +42,7 @@ Scheda personaggio per D&D, installabile come app sul telefono via web.
 ## Pubblicare una nuova versione (importante!)
 
 1. Modifica i file che ti servono.
-2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='10'</script>` e il `?v=10` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
+2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='12'</script>` e il `?v=12` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
 3. Se hai modificato anche `sw.js`, aumenta `CACHE_VERSION` in cima a `sw.js` (es. `'2'` → `'3'`).
 4. Commit e push su GitHub: i dispositivi si aggiornano da soli entro la prossima apertura (GitHub Pages aggiorna i file in ~10 minuti).
 
