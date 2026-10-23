@@ -2,6 +2,16 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v11
+
+- **Modifica oggetti**: corretto il salvataggio (il modulo di modifica usava gli stessi nomi dei campi del modulo di aggiunta).
+- **Modifica incantesimi e trucchetti**: tasto **Modifica** su ogni incantesimo (nome, livello, tempo di lancio, gittata, componenti, durata, concentrazione, rituale, danno o cura, effetti, note).
+- **Ritiri con etichetta**: i pulsanti che compaiono dopo un tiro non sono più bianchi e dicono da dove vengono (Ispirazione eroica, talento, specie, classe, sottoclasse, background). I danni extra sono in rosso con la loro origine.
+- **Ira con contatore** (regole 2024): usi per livello (2/3/4/5/6), consumo a ogni Ira, durata massima 10 minuti (100 round) con conto alla rovescia. L'Ira finisce da sola se non la prolunghi (attacco contro un nemico, TS imposto o azione bonus; dal livello 15 con Ira persistente dura i 10 minuti). Gli usi tornano con il riposo lungo.
+- **Durate**: riquadro per le abilità a tempo, 1 minuto = 10 round. Scende di un round a ogni round del combattimento live; fuori dal live c'è il tasto Round successivo. Si possono aggiungere timer a mano.
+- **Stregone**: Punti Stregoneria (livello 2+, uguali al livello) con consumo, Magia innata (2 usi, 1 minuto, a livello 7 anche con 2 PS), Fonte di magia (slot, PS) e riquadro **Metamagia** con le 10 opzioni, il costo, la descrizione e il tasto Usa. Le Metamagie conosciute sono 2, poi 4 al 10, 6 al 17: salendo di livello si apre la scelta.
+- Il riposo lungo azzera Ira, Magia innata, Punti Stregoneria e durate.
+
 ## Novità v10
 
 - **Armi modificabili**: nella scheda, in ogni arma aggiunta c'è il tasto **Modifica** (nome, dadi, caratteristica, bonus magico, tipo di danno, proprietà, peso). Il controllo del peso trasportabile resta attivo.
