@@ -2,15 +2,26 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v10
+
+- **Armi modificabili**: nella scheda, in ogni arma aggiunta c'è il tasto **Modifica** (nome, dadi, caratteristica, bonus magico, tipo di danno, proprietà, peso). Il controllo del peso trasportabile resta attivo.
+- **Oggetti usabili in battaglia**: nel modulo "Aggiungi oggetto" (e nel Negozio del Master) c'è l'opzione **Usabile in battaglia (si consuma)**, con dadi ed effetto (cura / danno / altro). Anche gli oggetti già presenti si possono impostare dal tasto **Mod.**. Le pozioni di cura vengono riconosciute da sole. Durante il live compare il tasto **Usa**: tira i dadi, manda il risultato al Master e toglie l'oggetto dallo zaino (la quantità scende anche dopo lo sblocco della scheda).
+- **PF sempre aggiornati**: quando il Master applica danni o cure, la scheda del giocatore si aggiorna in tempo reale (PF, PF temporanei, a terra, morto, tiri contro la morte). Sul telefono del Master i PF dei personaggi vengono riscritti nelle loro schede anche a fine scontro.
+- **Collegamento live più solido**:
+  - controllo continuo della connessione: se il telefono dorme o cambia rete e il collegamento resta "finto aperto", l'app se ne accorge e si ricollega da sola (anche al ritorno in primo piano);
+  - due broker usati **in parallelo**, così Master e giocatori non finiscono su server diversi e non smettono di vedersi;
+  - risolti i rimbalzi blocca/sblocca della scheda dopo uno scontro e lo sblocco "fantasma" che arrivava da un messaggio vecchio conservato dal broker all'inizio del nuovo scontro;
+  - gli aggiornamenti vecchi non sovrascrivono più quelli nuovi.
+
 ## Novità v9
 
 - **Sblocco manuale dal Master**: nel pannello "Combattimento live", sotto l'elenco giocatori, ora c'è un tasto **Sblocca** per ogni giocatore e un tasto **Sblocca tutte le schede**. Usa lo stesso canale dello sblocco automatico (fin scontro), quindi se quello automatico non arriva al giocatore, il Master lo forza con un tap: il giocatore riceve la notifica "Sbloccata" e la sua scheda si sblocca subito (funziona anche se il giocatore era offline: appena si ricollega lo snapshot lo sblocca).
-- **Aggiornamenti affidabili**: nuovo service worker "network-first" — l'app controlla GitHub ad ogni apertura/ritorno in primo piano; se c'è una versione nuova compare il banner **"Aggiornamento disponibile"** con il tasto *Aggiorna ora* (niente più cache bloccata dopo aver sostituito i file). In basso a destra vedi sempre la **versione** installata (es. "Scheda D&D v9").
+- **Aggiornamenti affidabili**: nuovo service worker "network-first" — l'app controlla GitHub ad ogni apertura/ritorno in primo piano; se c'è una versione nuova compare il banner **"Aggiornamento disponibile"** con il tasto *Aggiorna ora* (niente più cache bloccata dopo aver sostituito i file). In basso a destra vedi sempre la **versione** installata (es. "Scheda D&D v10").
 
 ## Pubblicare una nuova versione (importante!)
 
 1. Modifica i file che ti servono.
-2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='9'</script>` e il `?v=9` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
+2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='10'</script>` e il `?v=10` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
 3. Se hai modificato anche `sw.js`, aumenta `CACHE_VERSION` in cima a `sw.js` (es. `'2'` → `'3'`).
 4. Commit e push su GitHub: i dispositivi si aggiornano da soli entro la prossima apertura (GitHub Pages aggiorna i file in ~10 minuti).
 
