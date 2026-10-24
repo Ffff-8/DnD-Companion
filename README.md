@@ -2,6 +2,16 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v15
+
+- **Timer**: lanciando un incantesimo con una durata parte il suo timer (C = concentrazione: un nuovo incantesimo a concentrazione chiude il precedente). Fuori dallo scontro ci sono +1 round, +1 min, +10 min e +1 h. Il riposo breve fa passare un'ora a tutti i timer (prima cancellava solo quelli brevi). Verificati Ira, Ira persistente, Magia innata, timer nel live e durate degli effetti lato Master.
+- **Forgia**: budget di PE in alto, opzione del capo (miniboss/boss) a scomparsa, riquadro Gruppo con totale di PE rispetto al budget, Manda tutti e Svuota; ogni mostro è una riga con il tasto Scontro, il resto si apre toccando il nome.
+- **Eventi**: tabella compatta con le fasce del d100, catalogo con l'elenco a scomparsa, drop invariato.
+- **Negozio**: ricerca, categoria e ordinamento in un riquadro; senza filtri le categorie sono sezioni da aprire con il loro conteggio; ogni oggetto è una riga con prezzo, peso e Vendi, il resto si apre toccando il nome.
+- **Pesi realistici**: 124 oggetti corretti (valori PHB 2024 dove esistono, stime realistiche per il resto: gemme e anelli non pesano più 0, mantelli e stivali 1 kg, munizioni in proporzione, armature magiche come la loro base, mithral a metà peso, libri 2,5 kg), 27 materiali degli incantesimi con un peso proprio. Le copie già nel negozio e negli zaini si aggiornano, tranne quelle cambiate a mano.
+- **Cavalcature e veicoli** non contano più nel carico (li porta la cavalcatura): nello Zaino stanno in una sezione a parte e si possono comprare anche se pesano più di quanto il personaggio regge.
+- **Corretto**: le munizioni di cerbottana e armi da fuoco del negozio ora vengono consumate (prima i nomi non corrispondevano). Borsa conservante e Bottiglia di vetro con la descrizione giusta, chiodi da arrampicata a 0,5 MO.
+
 ## Novità v14
 
 - **Punti Stregoneria come gli slot**: un pallino per punto; tocca un pallino pieno per spendere un punto, uno vuoto per recuperarlo. Spariti i tasti -1 e +1.
@@ -75,7 +85,7 @@ Scheda personaggio per D&D, installabile come app sul telefono via web.
 ## Pubblicare una nuova versione (importante!)
 
 1. Modifica i file che ti servono.
-2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='14'</script>` e il `?v=14` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
+2. **Cambia la versione in UN solo punto**: in `index.html`, riga `<script>window.APP_VER='15'</script>` e il `?v=15` accanto (metti lo stesso numero in entrambi, es. `10`). Serve a forzare il ricaricamento di `app.js` sui telefoni.
 3. Se hai modificato anche `sw.js`, aumenta `CACHE_VERSION` in cima a `sw.js` (es. `'2'` → `'3'`).
 4. Commit e push su GitHub: i dispositivi si aggiornano da soli entro la prossima apertura (GitHub Pages aggiorna i file in ~10 minuti).
 

@@ -27,7 +27,7 @@ const XPT=[0,300,900,2700,6500,14000,23000,34000,48000,64000,85000,100000,120000
 let S={role:null,ch:null},W={s:1},TAB='sc';
 try{S=JSON.parse(localStorage.getItem('dd')||'')||S}catch(e){}
 S.chs=S.chs||[];if(S.ch&&!S.chs.length)S.chs=[S.ch];S.cur=S.cur||0;S.ch=S.chs.length==1?S.chs[0]:null;
-const sv=()=>{try{localStorage.setItem('dd',JSON.stringify({role:S.role,chs:S.chs,cur:S.cur,cs:S.cs,cc:S.cc,cb:S.cb,cf:S.cf,mg:S.mg,fe:S.fe,dm:S.dm,lvj:S.lvj,spv:S.spv}))}catch(e){if(!window.__svw){window.__svw=1;try{T('<b>Salvataggio non riuscito</b><small>La memoria del browser è piena o bloccata: le ultime modifiche potrebbero andare perse. Esporta i personaggi da Salva e importa.</small>')}catch(_){}}}},C=()=>S.ch,K=()=>CL[C().c],M=i=>Math.floor((C().st[i]+EF().ab[i]-10)/2),PB=()=>2+Math.floor((C().lv-1)/4);
+const sv=()=>{try{localStorage.setItem('dd',JSON.stringify({role:S.role,chs:S.chs,cur:S.cur,cs:S.cs,cc:S.cc,cb:S.cb,cf:S.cf,mg:S.mg,fe:S.fe,dm:S.dm,lvj:S.lvj,spv:S.spv,wv:S.wv}))}catch(e){if(!window.__svw){window.__svw=1;try{T('<b>Salvataggio non riuscito</b><small>La memoria del browser è piena o bloccata: le ultime modifiche potrebbero andare perse. Esporta i personaggi da Salva e importa.</small>')}catch(_){}}}},C=()=>S.ch,K=()=>CL[C().c],M=i=>Math.floor((C().st[i]+EF().ab[i]-10)/2),PB=()=>2+Math.floor((C().lv-1)/4);
 const SM=i=>M(SK[i][1])+(C().ps[i]?PB():(EF().mezza?Math.floor(PB()/2):0)),WM=w=>w.f==0?M(0):w.f==1?M(1):Math.max(M(0),M(1)),SA=()=>K()[5]>=0?K()[5]:C().sa>=0?C().sa:isTh()?3:SPA[C().s]>=0?SPA[C().s]:3;
 function dice(n,d){let a=[];for(let i=0;i<n;i++)a.push(rd(d));return a}
 function parse(s){let m=/(\d+)d(\d+)\s*([+-]\s*\d+)?/.exec(s||'');return m?[+m[1],+m[2],m[3]?+m[3].replace(/\s/g,''):0]:null}
@@ -92,9 +92,9 @@ const SZ={T:['Minuscola',.5],P:['Piccola',1],M:['Media',1],G:['Grande',2],E:['En
 const WW={'Randello':1,'Pugnale':.5,'Falcetto':1,'Martelletto leggero':1,'Ascia':1,'Giavellotto':1,'Mazza':2,'Bastone ferrato':2,'Lancia':1.5,'Randello pesante':5,'Dardo':.125,'Fionda':0,'Arco corto':1,'Balestra leggera':2.5,'Frusta':1.5,'Spada corta':1,'Scimitarra':1.5,'Stocco':1,'Spada lunga':1.5,'Ascia da battaglia':2,'Martello da guerra':2.5,'Piccone da guerra':1,'Mazzafrusto':1,'Morning star':2,'Tridente':2,'Lancia da cavaliere':3,'Alabarda':3,'Picca':9,'Glaive':3,'Ascia bipenne':3.5,'Spadone':3,'Maglio':5,'Balestra a mano':1.5,'Arco lungo':1,'Balestra pesante':9,'Cerbottana':.5,'Pistola':1.5,'Moschetto':5};
 const szOf=c=>c.sz||SP[c.s][2],su=c=>SU[c.s]||(c.s>=10&&SP[c.s][6])?1:0,szm=c=>SZ[SZK[Math.min(5,SZK.indexOf(szOf(c))+su(c))]][1],clb=c=>c.c<12?CB[c.c]:(CL[c.c][12]||0),spb=c=>c.s<10?SB[c.s]:(SP[c.s][5]||0),bgb=c=>c.b<16?BB[c.b]:(BG[c.b][2]||0),fmt=n=>(Math.round(n*100)/100).toLocaleString('it-IT'),wt=w=>w.kg!=null?+w.kg:(WW[w.n]||0);
 const cap=c=>(c.st[0]+EF(c).ab[0])*7.5*szm(c)+clb(c)+spb(c)+bgb(c)+(+c.cx||0);
-function load(c){c=c||C();let m=co(c);return AR[c.e.a][3]+(c.e.s?3:0)+c.w.reduce((t,x)=>t+wt(x),0)+c.it.reduce((t,x)=>t+ikg(x)*(x.q||1),0)+(m.MR+m.MA+m.ME+m.MO+m.MP)*.01}
+function load(c){c=c||C();let m=co(c);return AR[c.e.a][3]+(c.e.s?3:0)+c.w.reduce((t,x)=>t+wt(x),0)+c.it.reduce((t,x)=>t+(isVc(x)?0:ikg(x)*(x.q||1)),0)+(m.MR+m.MA+m.ME+m.MO+m.MP)*.01}
 function fits(x,why){let c=C(),l=load(c)+x,m=cap(c);if(l>m+1e-9){T(`<b>Troppo pesante</b><p>${why}: servirebbero ${fmt(l)} kg, ne puoi portare ${fmt(m)}</p>`);return false}return true}
-function loadCard(){let c=C();return`<div class="c"><b>Carico ${fmt(load(c))} / ${fmt(cap(c))} kg</b><details><summary>Come si calcola</summary><p class="mu">FOR ${c.st[0]} x 7,5 kg x ${szm(c)} (taglia ${SZ[szOf(c)][0]}${su(c)?', conta come una taglia più grande':''}) = ${fmt(c.st[0]*7.5*szm(c))} kg. Bonus: classe ${fmt(clb(c))}, specie ${fmt(spb(c))}, background ${fmt(bgb(c))}, extra ${fmt(c.cx||0)}. Il carico include armi, armatura, scudo, zaino e monete (50 monete = 0,5 kg).</p></details></div>`}
+function loadCard(){let c=C();return`<div class="c"><b>Carico ${fmt(load(c))} / ${fmt(cap(c))} kg</b><details><summary>Come si calcola</summary><p class="mu">FOR ${c.st[0]} x 7,5 kg x ${szm(c)} (taglia ${SZ[szOf(c)][0]}${su(c)?', conta come una taglia più grande':''}) = ${fmt(c.st[0]*7.5*szm(c))} kg. Bonus: classe ${fmt(clb(c))}, specie ${fmt(spb(c))}, background ${fmt(bgb(c))}, extra ${fmt(c.cx||0)}. Il carico include armi, armatura indossata, scudo, zaino e monete (50 monete = 0,5 kg). Cavalcature, veicoli, selle e barde non contano: li porta la cavalcatura.</p></details></div>`}
 function eqA(i){let c=C();if(fits(AR[i][3]-AR[c.e.a][3],AR[i][0])){c.e.a=i;sv()}R()}
 function eqS(v){let c=C();if(!v||fits(3,'Scudo')){c.e.s=v?1:0;sv()}R()}
 function mgM(msg){let r=(l,t,i,n)=>`<div class="row" style="cursor:default"><span>${l}: ${n}</span><span class="r"><button class="chip" onclick="cuE('${jsA(t)}',${i})">Modifica</button><button class="chip" onclick="cuX('${jsA(t)}',${i})">Elimina</button></span></div>`,h=(S.cs||[]).map((e,i)=>r('Specie','s',i,e[0])).join('')+(S.cc||[]).map((e,i)=>r('Classe','c',i,e[0])).join('')+(S.cb||[]).map((e,i)=>r('Background','b',i,e[0])).join('')+(S.cf||[]).map((e,i)=>r('Talento','f',i,e[0])).join('');MO(`<h3>Personalizzati</h3>${msg?`<p style="color:var(--hp)">${msg}</p>`:''}${h||'<p class="mu">Nessun elemento personalizzato.</p>'}<p class="mu">Le modifiche valgono subito per tutti i personaggi che li usano. Puoi eliminare solo ciò che nessun personaggio sta usando.</p><button class="b o" onclick="closeM()">Chiudi</button>`)}
@@ -111,7 +111,7 @@ let e=[n,+$('qh').value,[+$('q1').value,+$('q2').value],+$('qk').value||2,sk.len
 closeM();sv();R();if(j!=null)mgM('Modifiche salvate.')}
 const OS=(a,s)=>a.map((x,i)=>[x,i]).sort((p,q)=>p[0].localeCompare(q[0])).map(([x,i])=>`<option value="${i}"${i==s?' selected':''}>${x}</option>`).join('');
 const wl=()=>WP.filter(w=>!w.m||MART.includes(C().c)||EF().marz||(C().c==8&&/Accurata|Leggera/.test(w.p))||(C().c==5&&/Leggera/.test(w.p))).sort((a,b)=>a.m-b.m||a.n.localeCompare(b.n));
-const MW={'blocco di pietra':2,'arma da mischia da 1 mo':1,'sfera di cristallo':1.5,'cristallo':.25,'ciotola da 1000 mo':.5,'specchio, 1000 mo':.5,'tazza d\'acqua':.25,'acqua santa':.5,'acqua santa e polvere d\'argento da 100 mo':.5,'argilla':.5,'vaso di argilla, 150 mo':1,'bozzolo':.1,'burro':.1,'carota secca':.1,'cibo':.5,'cuoio':.5,'striscia di cuoio':.1,'cinghia di cuoio':.1,'corteccia di quercia':.1,'modellino di zigurat':.25,'spada in miniatura, 250 mo':.1,'pezzo di ferro e fiamma':.5,'ferro':.25,'limatura di ferro':.1,'polvere di ferro':.1,'sego, zolfo e ferro':.1,'pelliccia':.1,'pelliccia, ambra e vetro':.1,'pelliccia e verga':.15,'diadema, 1500 mo':.25,'diadema di giada da 1500 mo':.25,'lente d\'ingrandimento':.1,'guscio d\'uovo e guanto':.1,'oggetto sgradito':.25,'polvere e acqua':.1,'polvere, roccia e argilla':.25,'focus da 100 mo':.1,'vischio, trifoglio e un bastone':.5,'ramo fulminato':.1,'due calamite':.1,'calamita e polvere':.1,'mercurio e gomma arabica':.1,'zolfo':.1,'guano e zolfo':.1,'palla di guano e zolfo':.1,'tentacolo in salamoia':.1,'uovo marcio':.05},mwt=m=>{let k=m.toLowerCase();return k in MW?MW[k]:/^(goccia|ciglio|pulce|pizzico|polvere|seme|semi|sette)/.test(k)?.01:.05},ikg=x=>x.kg!=null?+x.kg:(x.mt?mwt(x.n):0);
+const MW={'diamante da 1000 mo':0.01,'diamante da 50 mo':0.01,'diamante da 5000 mo':0.01,'diamante, 200 mo':0.01,'diamanti da 25000 mo':0.01,'diamanti da 300 mo':0.01,'diamanti da 500 mo':0.01,'perla da 100 mo':0.01,'frammento di gemma':0.01,'un\'agata da 1000+ mo, consumata':0.01,'una pietra di onice nera da 150 mo per ogni cadavere':0.01,'diamante da 1000 mo e recipiente sigillabile da 2000 mo':35,'uno scrigno da 5000+ mo e una replica da 50+ mo':12.5,'un forziere ornato da 400+ mo':2.5,'un teschio dorato da 300+ mo':1,'un reliquiario dorato da 500+ mo':1,'simbolo sacro':0.5,'simbolo sacro da 5 mo':0.5,'ampolla di acqua santa da 25+ mo, consumata':0.5,'aria, ciottolo, cenere e acqua in una fiala dorata da 400+ mo':0.25,'un tentacolo sottaceto e un occhio in una fiala platinata da 400+ mo':0.25,'argento e ferro in polvere':0.2,'carbone, incenso ed erbe, 10 mo':0.2,'2 monete sugli occhi, consumate':0.02,'moneta di rame':0.01,'specchietto d\'argento':0.25,'un\'arma in cui sei competente, da almeno 1 mr':1,'blocco di pietra':2,'arma da mischia da 1 mo':1,'sfera di cristallo':0.1,'cristallo':0.1,'ciotola da 1000 mo':.5,'specchio, 1000 mo':.5,'tazza d\'acqua':.25,'acqua santa':.5,'acqua santa e polvere d\'argento da 100 mo':.5,'argilla':.5,'vaso di argilla, 150 mo':1,'bozzolo':.1,'burro':.1,'carota secca':.1,'cibo':.5,'cuoio':.5,'striscia di cuoio':.1,'cinghia di cuoio':.1,'corteccia di quercia':.1,'modellino di zigurat':.25,'spada in miniatura, 250 mo':.1,'pezzo di ferro e fiamma':.5,'ferro':.25,'limatura di ferro':.1,'polvere di ferro':.1,'sego, zolfo e ferro':.1,'pelliccia':.1,'pelliccia, ambra e vetro':.1,'pelliccia e verga':.15,'diadema, 1500 mo':.25,'diadema di giada da 1500 mo':.25,'lente d\'ingrandimento':.1,'guscio d\'uovo e guanto':.1,'oggetto sgradito':.25,'polvere e acqua':.1,'polvere, roccia e argilla':.25,'focus da 100 mo':.1,'vischio, trifoglio e un bastone':.5,'ramo fulminato':.1,'due calamite':.1,'calamita e polvere':.1,'mercurio e gomma arabica':.1,'zolfo':.1,'guano e zolfo':.1,'palla di guano e zolfo':.1,'tentacolo in salamoia':.1,'uovo marcio':.05},mwt=m=>{let k=m.toLowerCase();return k in MW?MW[k]:/^(goccia|ciglio|pulce|pizzico|polvere|seme|semi|sette)/.test(k)?.01:.05},ikg=x=>x.kg!=null?+x.kg:(x.mt?mwt(x.n):0);
 const CLX={
 0:'4 Aumento dei punteggi|6 Privilegio di sottoclasse|7 Istinto feroce; Balzo istintivo|8 Aumento dei punteggi|9 Colpo brutale|10 Privilegio di sottoclasse|11 Ira implacabile|12 Aumento dei punteggi|13 Colpo brutale migliorato|14 Privilegio di sottoclasse|15 Ira persistente|16 Aumento dei punteggi|17 Colpo brutale superiore|18 Forza indomabile|19 Dono epico|20 Campione primordiale',
 1:'4 Aumento dei punteggi|6 Privilegio di sottoclasse|7 Contraffascinazione|8 Aumento dei punteggi|9 Maestria|10 Segreti magici|12 Aumento dei punteggi|14 Privilegio di sottoclasse|16 Aumento dei punteggi|18 Ispirazione superiore|19 Dono epico|20 Parole di creazione',
@@ -236,9 +236,17 @@ if(sing&&!f.nm){let a=pool[0],c0=crf(bud/n),cu=Math.min(a.c[1],Math.max(a.c[0],c
 let w=Array.from({length:n},()=>.7+Math.random()*.6);if(f.rk&&f.rk!='n'&&n>1){let S2=w.slice(1).reduce((x,y)=>x+y,0),ld=f.rk=='m'?.35:.5;w[0]=ld*S2/(1-ld)}else if(n>=3&&Math.random()<.6)w[0]=2.2;let tw=w.reduce((x,y)=>x+y,0);d.mn=[];
 for(let i=0;i<n;i++){let cr=dRkCr(crf(bud*w[i]/tw),i,f.rk),cand=pool.filter(a=>cr>=a.c[0]&&cr<=a.c[1]);if(!cand.length){let ds=a=>cr<a.c[0]?a.c[0]-cr:cr-a.c[1],mn=Math.min(...pool.map(ds));cand=pool.filter(a=>ds(a)==mn)}let a=pk(cand);{let mo=dMk(a,Math.min(a.c[1],Math.max(a.c[0],cr)),i);d.mn.push(i==0?dRank(mo,f.rk):mo)}}
 let cnt={};d.mn.forEach(m=>cnt[m.n]=(cnt[m.n]||0)+1);let seen={};d.mn.forEach(m=>{if(cnt[m.n]>1){seen[m.n]=(seen[m.n]||0)+1;m.n+=' '+seen[m.n]}});sv();R()}
-function dCard(m,i){return`<div class="c"><div class="r" style="justify-content:space-between"><b>${m.n}</b><small>${m.ty} - GS ${crn(m.cr)} - ${m.xp} PE</small></div><p>PF ${m.hp} - CA ${m.ac} - Iniziativa ${sg(m.ini)}${m.reg?' - rigenera '+m.reg+' PF/turno':''}</p>${m.ab6?`<small>${AB.map((a,j)=>a+' '+m.ab6[j]).join(' - ')}</small><br>`:''}${m.res?`<small>Resiste: ${m.res}</small><br>`:''}${m.imm?`<small>Immune: ${m.imm}</small><br>`:''}${m.at.map(a=>`<small>${a.n}: ${sg(a.h)} per colpire, ${a.d} ${a.t}</small><br>`).join('')}${m.sp.map(a=>`<small>${a.n}: ${a.dm||'effetto'}${/TS /.test(a.no||'')?' (CD '+m.dc+')':''}</small><br>`).join('')}${(m.ab||[]).map(a=>`<small><b>${a.n}</b>${a.dm?': '+a.dm:''}${a.ts?' (TS '+a.ts+', CD '+a.dc+')':''}${a.fx?' - '+a.fx+' '+a.du+' turni':''}${a.rc?' - '+a.rc:''}</small><br>`).join('')}${dMonDf(m)}<small class="mu">${m.tr}</small><div class="r" style="margin-top:8px"><button class="b" onclick="dTo(${i})">Allo scontro</button><button class="b o" onclick="dRe(${i})">Rigenera</button><button class="b o" onclick="dEd(${i})">Modifica</button><button class="chip" onclick="DD().mn.splice(${i},1);sv();R()">Elimina</button></div></div>`}
+function dCard(m,i){return`<div class="it sp"><details ontoggle="if(this.open)MNO.add('${jsA(m.n)}');else MNO.delete('${jsA(m.n)}')" ${MNO.has(m.n)?'open':''}><summary><b>${m.n}</b><br><small class="mu">${m.ty} - GS ${crn(m.cr)} - ${m.xp} PE - PF ${m.hp} - CA ${m.ac}</small></summary><p style="margin:6px 0"><small>Iniziativa ${sg(m.ini)}${m.reg?' - rigenera '+m.reg+' PF/turno':''}</small><br>${m.ab6?`<small>${AB.map((a,j)=>a+' '+m.ab6[j]).join(' - ')}</small><br>`:''}${m.res?`<small>Resiste: ${m.res}</small><br>`:''}${m.imm?`<small>Immune: ${m.imm}</small><br>`:''}${m.at.map(a=>`<small>${a.n}: ${sg(a.h)} per colpire, ${a.d} ${a.t}</small><br>`).join('')}${m.sp.map(a=>`<small>${a.n}: ${a.dm||'effetto'}${/TS /.test(a.no||'')?' (CD '+m.dc+')':''}</small><br>`).join('')}${(m.ab||[]).map(a=>`<small><b>${a.n}</b>${a.dm?': '+a.dm:''}${a.ts?' (TS '+a.ts+', CD '+a.dc+')':''}${a.fx?' - '+a.fx+' '+a.du+' turni':''}${a.rc?' - '+a.rc:''}</small><br>`).join('')}</p>${dMonDf(m)}<small class="mu">${m.tr}</small><div class="r" style="margin-top:6px"><button class="chip" onclick="dRe(${i})">Rigenera</button><button class="chip" onclick="dEd(${i})">Modifica</button><button class="chip" onclick="dMnDel(${i})">Elimina</button></div></details><button class="b" onclick="dTo(${i})">Scontro</button></div>`}
+const MNO=new Set(),NGO=new Set();
+function dMnDel(i){let m=DD().mn[i];if(!m||typeof confirm=='function'&&!confirm('Eliminare '+m.n+'?'))return;DD().mn.splice(i,1);sv();R()}
+function dMnClr(){if(typeof confirm=='function'&&!confirm('Togliere tutti i mostri generati?'))return;DD().mn=[];sv();R()}
 function dRe(i){let m=DD().mn[i];if(m.ai>=0){let n=dMk(ARQ[m.ai],m.cr,0);DD().mn[i]=n;sv();R()}}
-function dFg(){let d=DD(),f=d.fp,ty=typeof f.ty=='string'?f.ty:'r',op=(v,l)=>`<option value="${v}" ${ty==v?'selected':''}>${l}</option>`;return`<div class="c"><b>Forgia dei mostri</b><div class="g"><label>Livello<input type="number" value="${f.lv}" min="1" max="20" onchange="DD().fp.lv=+this.value"></label><label>Giocatori<input type="number" value="${f.np}" min="1" max="10" onchange="DD().fp.np=+this.value"></label><label>Mostri (0 auto)<input type="number" value="${f.nm}" min="0" max="12" onchange="DD().fp.nm=+this.value"></label></div><label>Difficoltà<select onchange="DD().fp.df=+this.value">${['Facile','Media','Difficile','Mortale'].map((x,i)=>`<option value="${i}" ${f.df==i?'selected':''}>${x}</option>`).join('')}</select></label><label>Rango del capo del gruppo<select onchange="DD().fp.rk=this.value">${[['n','Normale'],['m','Miniboss (il capo del gruppo)'],['b','Boss (il capo del gruppo)']].map(q=>`<option value="${q[0]}" ${(f.rk||'n')==q[0]?'selected':''}>${q[1]}</option>`).join('')}</select></label>${f.rk&&f.rk!='n'?`<p class="mu"><small>${f.rk=='m'?'Miniboss: PF x2, CA +1, colpire +1, danni +25%, regge fino a 3 effetti, PE x1,5.':'Boss: PF x3,5, CA +2, colpire +2, danni +50%, regge fino a 4 effetti, PE x2,5.'} Gli altri mostri del gruppo sono normali (2 effetti).</small></p>`:''}<label>Tipologia<select onchange="DD().fp.ty=this.value">${op('r','Casuale (tema a sorte)')}${op('x','Misto (qualsiasi mostro)')}${TYPES.filter(t=>ARQ.some(a=>a.t==t)).map(t=>`<optgroup label="${t}">${op('t:'+t,'Tema: '+t+' (misto)')}${ARQ.map((a,i)=>a.t==t?op('a:'+i,a.n):'').join('')}</optgroup>`).join('')}</select></label><div class="r"><button class="b" onclick="dGen()">Genera</button><button class="b o" onclick="dMan()">Mostro manuale</button></div><small class="mu">${ARQ.length} tipologie. Ogni mostro ha statistiche, attacchi e abilità proprie. Il budget di PE segue la tabella 2024 (Bassa, Moderata, Alta). Mortale è un'aggiunta mia: Alta moltiplicata per 1,5.</small></div>${d.mn.map(dCard).join('')||'<p class="mu">Nessun mostro: premi Genera.</p>'}${d.mn.length?'<button class="b" onclick="dAll()">Manda tutti allo scontro</button>':''}`}
+function dFg(){let d=DD(),f=d.fp,ty=typeof f.ty=='string'?f.ty:'r',op=(v,l)=>`<option value="${v}" ${ty==v?'selected':''}>${l}</option>`,b=XB[Math.min(19,Math.max(0,(f.lv||1)-1))],bud=Math.round(b[Math.min(f.df,2)]*(f.df==3?1.5:1)*(f.np||1)),tot=d.mn.reduce((a,m)=>a+(+m.xp||0),0),rk=f.rk||'n',set=k=>`onchange="DD().fp.${k}=+this.value;sv();R()"`;
+return`<div class="c"><div class="hd"><b>Forgia dei mostri</b><small class="mu">Budget ${bud} PE</small></div><div class="g"><label>Livello<input type="number" value="${f.lv}" min="1" max="20" ${set('lv')}></label><label>Giocatori<input type="number" value="${f.np}" min="1" max="10" ${set('np')}></label><label>Mostri<input type="number" value="${f.nm}" min="0" max="12" ${set('nm')} title="0 = automatico"></label></div>
+<label>Difficoltà<select ${set('df')}>${['Facile','Media','Difficile','Mortale'].map((x,i)=>`<option value="${i}" ${f.df==i?'selected':''}>${x}</option>`).join('')}</select></label><label>Tipologia<select onchange="DD().fp.ty=this.value;sv()">${op('r','Casuale (tema a sorte)')}${op('x','Misto (qualsiasi mostro)')}${TYPES.filter(t=>ARQ.some(a=>a.t==t)).map(t=>`<optgroup label="${t}">${op('t:'+t,'Tema: '+t+' (misto)')}${ARQ.map((a,i)=>a.t==t?op('a:'+i,a.n):'').join('')}</optgroup>`).join('')}</select></label>
+<details class="add"><summary>Capo del gruppo: ${{n:'normale',m:'miniboss',b:'boss'}[rk]}</summary><select onchange="DD().fp.rk=this.value;sv();R()">${[['n','Normale'],['m','Miniboss'],['b','Boss']].map(q=>`<option value="${q[0]}" ${rk==q[0]?'selected':''}>${q[1]}</option>`).join('')}</select><p class="mu"><small>Miniboss: PF x2, CA +1, colpire +1, danni +25%, regge fino a 3 effetti, PE x1,5. Boss: PF x3,5, CA +2, colpire +2, danni +50%, regge fino a 4 effetti, PE x2,5. Gli altri mostri del gruppo restano normali.</small></p></details>
+<div class="r" style="margin-top:8px"><button class="b" onclick="dGen()">Genera il gruppo</button><button class="b o" onclick="dMan()">Mostro manuale</button></div><small class="mu">${ARQ.length} tipologie. Mostri a 0 = numero automatico. Budget dalla tabella 2024 (Bassa, Moderata, Alta); Mortale è Alta x1,5.</small></div>
+${d.mn.length?`<div class="c"><div class="hd"><b>Gruppo (${d.mn.length})</b><small class="mu">${tot} PE${tot>bud*1.1?' - sopra il budget':tot<bud*.5?' - sotto il budget':''}</small></div><div class="r" style="margin:4px 0 6px"><button class="b" onclick="dAll()">Manda tutti allo scontro</button><button class="chip" onclick="dMnClr()">Svuota</button></div>${d.mn.map(dCard).join('')}</div>`:'<p class="mu">Nessun mostro: imposta il gruppo e premi Genera.</p>'}`}
 function dTo(i){let e=dEn(),m=JSON.parse(JSON.stringify(DD().mn[i]));m.id=nid();dFxFill(m);e.df=DD().fp.df;e.m.push(m);sv();DT='cb';R()}
 function dAll(){let e=dEn();e.df=DD().fp.df;DD().mn.forEach(x=>{let m=JSON.parse(JSON.stringify(x));m.id=nid();dFxFill(m);e.m.push(m)});sv();DT='cb';R()}
 function dEn(){let d=DD();return d.en||(d.en={m:[],ph:'s',tl:[],cur:0,rnd:1,log:[]})}
@@ -481,9 +489,9 @@ function dRes(){let d=DD();if(d.en&&d.en.ph=='f')lvFinalAll();d.en=null;d.pt.for
 /* --- eventi --- */
 let EVCAT=0,EVT=2;
 const EVC=`Viaggio e strada|Un ponte crollato blocca la strada|Una carovana di mercanti chiede una scorta|Pioggia battente: il sentiero diventa fango|Un viandante ferito implora aiuto|Una pattuglia chiede un pedaggio|Tracce fresche di una creatura enorme|Un bivio con il cartello cancellato|Un pellegrino offre cibo in cambio di una storia|Una nebbia innaturale avvolge il gruppo|Un carro rovesciato con il carico sparso~Incontri ostili|Imboscata di banditi dietro i massi|Un branco di lupi affamati segue il gruppo|Cacciatori di taglie cercano uno di voi|Un mostro solitario protegge il suo nido|Cultisti in cerca di una vittima|Una pattuglia di non morti vaga di notte|Un orco ubriaco sfida chiunque|Ragni giganti tra gli alberi|Un gigante reclama un pedaggio|Tornano i nemici dello scontro precedente~Ambiente e meteo|Tempesta improvvisa con fulmini|Caldo opprimente: serve un TS COS o si accumula fatica|Neve fitta: visibilità ridotta|Un terremoto scuote la zona|Notte di luna rossa con strani sussurri|Un vento gelido spegne le torce|Nebbia fitta: svantaggio a Percezione|Un'aurora magica amplifica gli incantesimi|Una frana chiude il passaggio|Un fiume in piena da guadare~Trappole e pericoli|Una piastra a pressione lancia dardi avvelenati|Un corridoio con lame oscillanti|Un pavimento che cede su un pozzo|Una porta incantata che urla se aperta|Gas soporifero in una stanza chiusa|Una statua che lancia raggi di fuoco|Rune di guardia esplosive|Un cappio nascosto sul sentiero|Acqua che sale in una stanza sigillata|Ragnatele che nascondono un fossato~PNG e incontri sociali|Un mercante eccentrico vende oggetti strani|Un nobile offre un lavoro rischioso|Un bardo itinerante racconta una leggenda|Una guaritrice chiede erbe rare|Un ladruncolo tenta di derubare qualcuno|Un cavaliere errante sfida a duello|Un mendicante conosce un segreto utile|Un oste offre vitto e alloggio in cambio di un favore|Un fuggiasco chiede di essere nascosto|Un sacerdote cerca scorta per un pellegrinaggio~Tesori e scoperte|Una cassa nascosta sotto le radici|Un cadavere con una mappa del tesoro|Una pozione dimenticata su un altare|Un deposito di monete antiche|Un'arma arrugginita che brilla di magia|Una grotta di cristalli preziosi|Il diario di un avventuriero morto|Una pergamena sigillata|Gioielli nel nido di un uccello gigante|Un'armatura incantata abbandonata~Magia e stranezze|Un portale instabile si apre e si chiude|Una zona di magia morta: gli incantesimi falliscono|Un'eco ripete parole mai dette|Un fantasma chiede di mantenere una promessa|Una fonte che guarisce ma ha un prezzo|Un oggetto del gruppo comincia a parlare|Il tempo rallenta per un minuto|Un cerchio di funghi porta nel Mondo Fatato|Un'ombra senza padrone segue il gruppo|Un sogno condiviso porta un messaggio~Luoghi e stanze|Una biblioteca polverosa|Una cripta con sarcofagi|Un'armeria abbandonata|Una sala del trono vuota|Una cucina con cibo ancora caldo|Un santuario sconsacrato|Un laboratorio alchemico|Una prigione con una cella chiusa|Un lago sotterraneo|Un ponte su un abisso~Colpi di scena|Un alleato tradisce il gruppo|La taglia sul gruppo raddoppia|Un oggetto importante viene rubato|Arriva un rivale con lo stesso obiettivo|Il tempo stringe: scade un ultimatum|Il gruppo si perde|Un PNG amico è in pericolo|Una vecchia nemesi ricompare|Le provviste si sono guastate|Un testimone ha visto tutto~Dicerie e dettagli|Si dice che la miniera sia infestata|Qualcuno giura di aver visto un drago|Il barone è gravemente malato|Un tesoro è sepolto sotto la vecchia torre|Un forestiero cerca informazioni sul gruppo|Una profezia parla di tre eroi|Il mercato ha prezzi strani da giorni|Nessuno entra più nel bosco di notte`.split('~').map(s=>{let a=s.split('|');return{n:a[0],l:a.slice(1)}});
-function dEv(){let d=DD(),n=d.ev.length,ct=EVC[EVCAT]||EVC[0];return`<div class="c"><b>Genera eventi</b><label>Numero di eventi<input type="number" min="2" max="20" value="${n}" onchange="dEvN(+this.value)"></label>${d.ev.map((t,i)=>`<label>${evR(i,n)}<input value="${t.replace(/"/g,'&quot;')}" onchange="DD().ev[${i}]=this.value;sv()"></label>`).join('')}<button class="b" onclick="dEvR()">Tira d100</button></div>
-<div class="c"><b>Catalogo di eventi e cose da sorteggiare</b><small class="mu">Scegli una categoria: puoi sorteggiare con il dado, mettere una voce nella tabella qui sopra o riempire la tabella a caso. Gli eventi a mano restano sempre possibili.</small><label>Categoria<select onchange="EVCAT=+this.value;R()">${EVC.map((c,i)=>`<option value="${i}" ${i==EVCAT?'selected':''}>${c.n}</option>`).join('')}</select></label><div class="r"><button class="b" onclick="dEvC()">Sorteggia (d${ct.l.length})</button><button class="b o" onclick="dEvAll()">Da tutto il catalogo</button></div><div class="r" style="margin:6px 0"><button class="chip" onclick="dEvFill()">Riempi la tabella a caso</button></div>${ct.l.map((t,i)=>`<div class="row" style="cursor:default"><span>${t}</span><button class="chip" onclick="dEvAdd(${i})">+ Tabella</button></div>`).join('')}</div>
-<div class="c"><b>Drop casuale per classe</b><small class="mu">Un primo dado sceglie il giocatore (in base a classe e sottoclasse), un secondo il tipo di oggetto, un terzo l'oggetto che quel personaggio può usare.</small><label>Livello del bottino<select onchange="EVT=+this.value"><option value="1" ${EVT==1?'selected':''}>Basso (mostri fino a GS 4)</option><option value="2" ${EVT==2?'selected':''}>Medio (fino a GS 10)</option><option value="3" ${EVT==3?'selected':''}>Alto (fino a GS 16)</option><option value="4" ${EVT==4?'selected':''}>Epico (oltre GS 16)</option></select></label><button class="b" onclick="dEvDrop()">Genera il drop</button></div>`}
+function dEv(){let d=DD(),n=d.ev.length,ct=EVC[EVCAT]||EVC[0];return`<div class="c"><div class="hd"><b>Tabella degli eventi</b><label class="r" style="margin:0;flex-wrap:nowrap"><small>Voci</small><input type="number" min="2" max="20" value="${n}" style="width:70px" onchange="dEvN(+this.value)"></label></div>${d.ev.map((t,i)=>`<div class="r" style="flex-wrap:nowrap;margin:4px 0"><small class="mu" style="width:58px;flex:none">${evR(i,n).replace(/^.*d100: /,'').replace(')','')}</small><input value="${t.replace(/"/g,'&quot;')}" placeholder="Evento ${i+1}" onchange="DD().ev[${i}]=this.value;sv()"></div>`).join('')}<div class="r" style="margin-top:8px"><button class="b" onclick="dEvR()">Tira d100</button><button class="chip" onclick="dEvFill()">Riempi a caso dal catalogo</button></div></div>
+<div class="c"><div class="hd"><b>Catalogo</b><small class="mu">${EVC.reduce((a,c)=>a+c.l.length,0)} voci</small></div><label>Categoria<select onchange="EVCAT=+this.value;R()">${EVC.map((c,i)=>`<option value="${i}" ${i==EVCAT?'selected':''}>${c.n} (${c.l.length})</option>`).join('')}</select></label><div class="r"><button class="b" onclick="dEvC()">Sorteggia (d${ct.l.length})</button><button class="b o" onclick="dEvAll()">Da tutto il catalogo</button></div><details class="add"><summary>Vedi le voci di ${ct.n} e mettile in tabella</summary>${ct.l.map((t,i)=>`<div class="row" style="cursor:default"><span>${t}</span><button class="chip" onclick="dEvAdd(${i})">+ Tabella</button></div>`).join('')}</details></div>
+<div class="c"><b>Drop casuale per classe</b><br><small class="mu">Un dado sceglie il giocatore (classe e sottoclasse), uno il tipo di oggetto, uno l'oggetto che quel personaggio può usare.</small><label>Livello del bottino<select onchange="EVT=+this.value"><option value="1" ${EVT==1?'selected':''}>Basso (mostri fino a GS 4)</option><option value="2" ${EVT==2?'selected':''}>Medio (fino a GS 10)</option><option value="3" ${EVT==3?'selected':''}>Alto (fino a GS 16)</option><option value="4" ${EVT==4?'selected':''}>Epico (oltre GS 16)</option></select></label><button class="b" onclick="dEvDrop()">Genera il drop</button></div>`}
 const evR=(i,n)=>'Evento '+(i+1)+' (d100: '+(Math.floor(i*100/n)+1)+'-'+Math.floor((i+1)*100/n)+')';
 function dEvN(n){let d=DD();n=Math.max(2,Math.min(20,n||2));while(d.ev.length<n)d.ev.push('');d.ev.length=n;sv();R()}
 function dEvR(){let d=DD(),n=d.ev.length,r=rd(100),i=Math.min(n-1,Math.floor((r-1)*n/100));T(`<b>d100: ${r}</b><div class="big" style="font-size:1.4em">${d.ev[i]||'Evento '+(i+1)+' (vuoto)'}</div><small>${evR(i,n)}</small>`)}
@@ -497,24 +505,24 @@ const CV=[['MR',1],['MA',10],['ME',50],['MO',100],['MP',1000]],pf=mr=>{let o=[],
 let NF='',NQ='',NS='',NP=40;
 const SHC=['Arma','Armatura','Grimorio','Pozione','Oggetto magico','Materiali','Equipaggiamento','Strumenti','Cavalcature','Altro'];
 const SHD=`Arma|Frecce (20)|1|0.5|0|Munizioni per arco corto e arco lungo. Danno come l'arma; circa metà si recupera dopo lo scontro.
-Arma|Quadrelli per balestra (20)|1|0.7|0|Munizioni per balestra leggera e pesante. Danno come l'arma.
-Arma|Quadrelli per balestra a mano (20)|1|0.5|0|Munizioni per balestra a mano. Danno come l'arma.
-Arma|Proiettili per fionda (20)|0.04|0.7|0|Munizioni per fionda. Danno come l'arma.
+Arma|Quadrelli per balestra (20)|1|0.75|0|Munizioni per balestra leggera e pesante. Danno come l'arma.
+Arma|Quadrelli per balestra a mano (20)|1|0.75|0|Munizioni per balestra a mano. Danno come l'arma.
+Arma|Proiettili per fionda (20)|0.04|0.75|0|Munizioni per fionda. Danno come l'arma.
 Arma|Dardi per cerbottana (50)|1|0.5|0|Munizioni per cerbottana. 1 danno perforante.
 Arma|Pallottole per armi da fuoco (10)|3|1|0|Munizioni per pistola e moschetto. Danno come l'arma.
-Arma|Frecce d'argento (5)|25|0.3|0|Superano la resistenza delle creature vulnerabili all'argento. Danno come l'arma.
-Arma|Frecce da segnalazione (5)|5|0.3|0|Fischiano in volo e lasciano una scia di fumo colorato visibile a 1 km.
-Arma|Frecce a punta larga (5)|2|0.3|0|Frecce da caccia: 1d4 perforante, ottime contro bestie non corazzate.
+Arma|Frecce d'argento (5)|25|0.125|0|Superano la resistenza delle creature vulnerabili all'argento. Danno come l'arma.
+Arma|Frecce da segnalazione (5)|5|0.125|0|Fischiano in volo e lasciano una scia di fumo colorato visibile a 1 km.
+Arma|Frecce a punta larga (5)|2|0.125|0|Frecce da caccia: 1d4 perforante, ottime contro bestie non corazzate.
 Arma|Spada fiammeggiante|5000|1.5|1|Spada magica rara (sintonia). Parola di comando: la lama prende fuoco, +2d6 danni da fuoco e luce di 12 m. Statistiche di base della spada.
 Arma|Spada del gelo|25000|1.5|1|Spada magica molto rara (sintonia). +1 a colpire e ai danni, +1d6 freddo, resistenza al fuoco, spegne le fiamme libere.
 Arma|Spada ferente|3000|1.5|1|Spada magica rara (sintonia). Le ferite inflitte sanguinano: 1d4 necrotici all'inizio di ogni turno del bersaglio.
 Arma|Spada della vita rubata|3500|1.5|1|Spada magica rara (sintonia). Con un 20 naturale +10 danni necrotici e ottieni 10 PF temporanei.
 Arma|Spada affilata|20000|1.5|1|Spada magica molto rara (sintonia). +3; con un 20 naturale infligge 14 danni extra o taglia un arto.
-Arma|Lama solare|12000|1.5|1|Stocco raggiante raro (sintonia). +2 a colpire e danni, danni radianti, +1d8 contro i non morti, luce solare di 4,5 m.
+Arma|Lama solare|12000|1|1|Stocco raggiante raro (sintonia). +2 a colpire e danni, danni radianti, +1d8 contro i non morti, luce solare di 4,5 m.
 Arma|Spada vorpal|100000|1.5|1|Spada leggendaria (sintonia). +3, ignora la resistenza al tagliente, con un 20 naturale decapita.
 Arma|Pugnale velenoso|2500|0.5|1|Pugnale magico raro (sintonia). +1; azione: veleno 2d10 (TS COS CD 15) per 1 minuto.
 Arma|Ascia del berserker|3000|2|1|Ascia magica rara (sintonia). +1, +1 PF per livello, ma ti spinge alla furia in combattimento.
-Arma|Martello del nano|18000|2|1|Martello da guerra molto raro (sintonia da nano). +3, lanciabile 6/18 m, ritorna in mano, +1d8 (+2d8 contro giganti).
+Arma|Martello del nano|18000|2.5|1|Martello da guerra molto raro (sintonia da nano). +3, lanciabile 6/18 m, ritorna in mano, +1d8 (+2d8 contro giganti).
 Arma|Mazza distruttiva|4000|2|1|Mazza magica rara (sintonia). +1d6 radiante contro immondi e non morti; TS SAG o spaventati.
 Arma|Mazza punitiva|4000|2|1|Mazza magica rara (sintonia). +1; contro i costrutti +2d6 danni.
 Arma|Mazza del terrore|3000|2|1|Mazza magica rara (sintonia). 3 cariche: spaventa i bersagli vicini (TS SAG CD 15) per 1 minuto.
@@ -527,13 +535,13 @@ Arma|Difensore|24000|1.5|1|Spada leggendaria (sintonia). +3; puoi trasferire par
 Arma|Arma della cautela|1500|1.5|1|Arma magica non comune (sintonia). Non puoi essere sorpreso e hai vantaggio all'iniziativa.
 Arma|Arma vile|4000|1.5|0|Arma magica rara. Con un 20 naturale infligge +2d6 danni extra.
 Arma|Tridente del comando dei pesci|800|2|1|Tridente non comune (sintonia). 3 cariche: Dominare bestie (solo pesci).
-Armatura|Giaco di maglia di mithral|800|10|0|CA 13 + DES (max 2). Leggerissimo: nessuno svantaggio a Furtività.
-Armatura|Cotta di maglia di mithral|1500|10|0|CA 16. Nessun requisito di FOR e nessuno svantaggio a Furtività.
-Armatura|Armatura a piastre di mithral|3000|12|0|CA 18. Nessun requisito di FOR e nessuno svantaggio a Furtività.
+Armatura|Giaco di maglia di mithral|800|5|0|CA 13 + DES (max 2). Leggerissimo: nessuno svantaggio a Furtività.
+Armatura|Cotta di maglia di mithral|1500|13.75|0|CA 16. Nessun requisito di FOR e nessuno svantaggio a Furtività.
+Armatura|Armatura a piastre di mithral|3000|16.25|0|CA 18. Nessun requisito di FOR e nessuno svantaggio a Furtività.
 Armatura|Cotta di maglia adamantina|500|27.5|0|CA 16. I colpi critici contro chi la indossa diventano colpi normali.
-Armatura|Armatura di scaglie di drago|6000|22|1|Armatura magica molto rara (sintonia). CA 14 + DES (max 2), +1 CA, resistenza a un tipo di danno del drago.
+Armatura|Armatura di scaglie di drago|6000|22.5|1|Armatura magica molto rara (sintonia). CA 14 + DES (max 2), +1 CA, resistenza a un tipo di danno del drago.
 Armatura|Armatura della resistenza|6000|10|1|Armatura magica rara (sintonia). Resistenza a un tipo di danno scelto alla creazione.
-Armatura|Armatura dell'invulnerabilità|100000|27.5|1|Armatura a piastre leggendaria (sintonia). Resistenza ai danni non magici; 1 volta al giorno immunità per 10 minuti.
+Armatura|Armatura dell'invulnerabilità|100000|32.5|1|Armatura a piastre leggendaria (sintonia). Resistenza ai danni non magici; 1 volta al giorno immunità per 10 minuti.
 Armatura|Scudo che attira frecce|6000|3|1|Scudo magico raro (sintonia). +2 CA, +2 contro attacchi a distanza; reazione: i colpi a distanza sui vicini ricadono su di te.
 Armatura|Scudo animato|16000|3|1|Scudo magico molto raro (sintonia). Parola di comando: levita e ti protegge senza essere impugnato per 1 minuto.
 Armatura|Scudo antimagia|20000|3|1|Scudo magico molto raro (sintonia). +2 CA, vantaggio ai TS contro incantesimi, magie su di te con svantaggio.
@@ -570,7 +578,7 @@ Grimorio|Amuleto (simbolo sacro)|5|0.5|0|Simbolo sacro da portare al collo: focu
 Grimorio|Emblema (simbolo sacro)|5|0|0|Simbolo sacro inciso su scudo o armatura.
 Grimorio|Reliquiario (simbolo sacro)|5|1|0|Piccolo scrigno sacro: focus per incantesimi divini.
 Grimorio|Borsa dei componenti|25|1|0|Borsa con scomparti per i componenti materiali comuni.
-Grimorio|Libro di preghiere|25|2|0|Raccolta di preghiere e riti di una divinità.
+Grimorio|Libro di preghiere|25|2.5|0|Raccolta di preghiere e riti di una divinità.
 Grimorio|Tomo del pensiero chiaro|40000|2.5|1|Tomo molto raro: dopo 48 ore di lettura INT +2 (max 30) permanente.
 Grimorio|Tomo della comprensione|40000|2.5|1|Tomo molto raro: dopo 48 ore di lettura SAG +2 (max 30) permanente.
 Grimorio|Tomo della leadership e dell'influenza|40000|2.5|1|Tomo molto raro: dopo 48 ore di lettura CAR +2 (max 30) permanente.
@@ -578,32 +586,32 @@ Grimorio|Manuale della salute fisica|40000|2.5|1|Manuale molto raro: dopo 48 ore
 Grimorio|Manuale dell'agilità|40000|2.5|1|Manuale molto raro: dopo 48 ore di lettura DES +2 (max 30) permanente.
 Grimorio|Manuale dell'esercizio vantaggioso|40000|2.5|1|Manuale molto raro: dopo 48 ore di lettura FOR +2 (max 30) permanente.
 Grimorio|Diario dell'esploratore|5|0.5|0|Quaderno rilegato con mappe da compilare e pagine impermeabili.
-Materiali|Agata muschiata|10|0|0|Gemma da 10 MO. Pietra semipreziosa traslucida con venature.
-Materiali|Azzurrite|10|0|0|Gemma da 10 MO. Pietra opaca blu scuro.
-Materiali|Ematite|10|0|0|Gemma da 10 MO. Pietra grigio scuro lucente.
-Materiali|Lapislazzuli|10|0|0|Gemma da 10 MO. Pietra blu intenso con macchie dorate.
-Materiali|Malachite|10|0|0|Gemma da 10 MO. Pietra verde striata.
-Materiali|Turchese|10|0|0|Gemma da 10 MO. Pietra blu-verde opaca.
-Materiali|Corniola|50|0|0|Gemma da 50 MO. Pietra rosso-arancio traslucida.
-Materiali|Occhio di tigre|50|0|0|Gemma da 50 MO. Pietra dorata con riflessi cangianti.
-Materiali|Quarzo rosa|50|0|0|Gemma da 50 MO. Pietra rosa pallido traslucida.
-Materiali|Zircone|50|0|0|Gemma da 50 MO. Pietra trasparente azzurrina.
-Materiali|Ametista|100|0|0|Gemma da 100 MO. Pietra viola trasparente.
-Materiali|Granato|100|0|0|Gemma da 100 MO. Pietra rosso scuro trasparente.
-Materiali|Giada|100|0|0|Gemma da 100 MO. Pietra verde traslucida.
-Materiali|Perla|100|0|0|Gemma da 100 MO. Perla bianca: componente di Identificare.
-Materiali|Spinello|100|0|0|Gemma da 100 MO. Pietra rossa o azzurra trasparente.
-Materiali|Acquamarina|500|0|0|Gemma da 500 MO. Pietra blu pallido trasparente.
-Materiali|Perla nera|500|0|0|Gemma da 500 MO. Perla scura e iridescente.
-Materiali|Topazio|500|0|0|Gemma da 500 MO. Pietra giallo dorato trasparente.
-Materiali|Opale|1000|0|0|Gemma da 1000 MO. Pietra pallida con riflessi colorati.
-Materiali|Zaffiro stellato|1000|0|0|Gemma da 1000 MO. Zaffiro con una stella a sei raggi.
-Materiali|Diamante|5000|0|0|Gemma da 5000 MO. Pietra trasparente di durezza assoluta.
-Materiali|Rubino|5000|0|0|Gemma da 5000 MO. Pietra rosso intenso trasparente.
-Materiali|Smeraldo|5000|0|0|Gemma da 5000 MO. Pietra verde intenso trasparente.
-Materiali|Zaffiro|5000|0|0|Gemma da 5000 MO. Pietra blu intenso trasparente.
-Materiali|Diamante da 300 MO (Rianimare)|300|0|0|Componente materiale consumato da Rianimare e magie simili.
-Materiali|Polvere di diamante (100 MO)|100|0.1|0|Componente materiale di Ristorare superiore e magie simili.
+Materiali|Agata muschiata|10|0.01|0|Gemma da 10 MO. Pietra semipreziosa traslucida con venature.
+Materiali|Azzurrite|10|0.01|0|Gemma da 10 MO. Pietra opaca blu scuro.
+Materiali|Ematite|10|0.01|0|Gemma da 10 MO. Pietra grigio scuro lucente.
+Materiali|Lapislazzuli|10|0.01|0|Gemma da 10 MO. Pietra blu intenso con macchie dorate.
+Materiali|Malachite|10|0.01|0|Gemma da 10 MO. Pietra verde striata.
+Materiali|Turchese|10|0.01|0|Gemma da 10 MO. Pietra blu-verde opaca.
+Materiali|Corniola|50|0.01|0|Gemma da 50 MO. Pietra rosso-arancio traslucida.
+Materiali|Occhio di tigre|50|0.01|0|Gemma da 50 MO. Pietra dorata con riflessi cangianti.
+Materiali|Quarzo rosa|50|0.01|0|Gemma da 50 MO. Pietra rosa pallido traslucida.
+Materiali|Zircone|50|0.01|0|Gemma da 50 MO. Pietra trasparente azzurrina.
+Materiali|Ametista|100|0.01|0|Gemma da 100 MO. Pietra viola trasparente.
+Materiali|Granato|100|0.01|0|Gemma da 100 MO. Pietra rosso scuro trasparente.
+Materiali|Giada|100|0.01|0|Gemma da 100 MO. Pietra verde traslucida.
+Materiali|Perla|100|0.01|0|Gemma da 100 MO. Perla bianca: componente di Identificare.
+Materiali|Spinello|100|0.01|0|Gemma da 100 MO. Pietra rossa o azzurra trasparente.
+Materiali|Acquamarina|500|0.01|0|Gemma da 500 MO. Pietra blu pallido trasparente.
+Materiali|Perla nera|500|0.01|0|Gemma da 500 MO. Perla scura e iridescente.
+Materiali|Topazio|500|0.01|0|Gemma da 500 MO. Pietra giallo dorato trasparente.
+Materiali|Opale|1000|0.01|0|Gemma da 1000 MO. Pietra pallida con riflessi colorati.
+Materiali|Zaffiro stellato|1000|0.01|0|Gemma da 1000 MO. Zaffiro con una stella a sei raggi.
+Materiali|Diamante|5000|0.01|0|Gemma da 5000 MO. Pietra trasparente di durezza assoluta.
+Materiali|Rubino|5000|0.01|0|Gemma da 5000 MO. Pietra rosso intenso trasparente.
+Materiali|Smeraldo|5000|0.01|0|Gemma da 5000 MO. Pietra verde intenso trasparente.
+Materiali|Zaffiro|5000|0.01|0|Gemma da 5000 MO. Pietra blu intenso trasparente.
+Materiali|Diamante da 300 MO (Rianimare)|300|0.01|0|Componente materiale consumato da Rianimare e magie simili.
+Materiali|Polvere di diamante (100 MO)|100|0.01|0|Componente materiale di Ristorare superiore e magie simili.
 Materiali|Polvere d'argento e ferro|100|0.2|0|Componente di Creare non morti e magie simili.
 Materiali|Incenso e carboni (10 MO)|10|0.2|0|Componente di Evoca famiglio e riti simili.
 Materiali|Gioielli per cerchio magico (100 MO)|100|0.2|0|Componente consumato da Cerchio magico.
@@ -665,33 +673,33 @@ Pozione|Siero della verità|150|0|0|Veleno ingerito: TS COS CD 11 o non puoi men
 Pozione|Essenza d'etere|300|0|0|Veleno inalato: TS COS CD 15 o privo di sensi per 8 ore.
 Pozione|Sangue d'assassino|150|0|0|Veleno ingerito: TS COS CD 10 o 1d12 veleno e avvelenato per 24 ore.
 Pozione|Olio affilato|1000|0.5|0|Applicato a un'arma tagliente: +3 a colpire e ai danni per 1 ora.
-Oggetto magico|Anello di protezione|3500|0|1|Anello raro (sintonia). +1 alla CA e a tutti i tiri salvezza.
-Oggetto magico|Anello di salto|600|0|1|Anello non comune (sintonia). Incantesimo Salto a volontà (solo su di te).
-Oggetto magico|Anello di nuotare|600|0|0|Anello non comune. Velocità di nuoto 12 m.
-Oggetto magico|Anello di caduta morbida|500|0|1|Anello non comune (sintonia). Caduta morbida su di te quando cadi.
-Oggetto magico|Anello dell'evasione|2000|0|1|Anello raro (sintonia). 3 cariche: l'esito di un TS DES fallito diventa un successo.
-Oggetto magico|Anello di rigenerazione|8000|0|1|Anello molto raro (sintonia). Recuperi 1d6 PF ogni 10 minuti e ricresce ciò che hai perso.
-Oggetto magico|Anello di schermatura mentale|800|0|1|Anello non comune (sintonia). Immune a individuazione dei pensieri e a divinazioni che leggono la mente.
-Oggetto magico|Anello di resistenza|4000|0|1|Anello raro (sintonia). Resistenza a un tipo di danno (dipende dalla gemma incastonata).
-Oggetto magico|Anello di influenza animale|1500|0|1|Anello raro (sintonia). 3 cariche: Amicizia con gli animali, Paura, Parlare con gli animali.
-Oggetto magico|Amuleto della salute|8000|0.5|1|Amuleto raro (sintonia). La tua COS diventa 19.
-Oggetto magico|Amuleto protettivo dai veleni|5000|0|1|Amuleto raro (sintonia). Immunità al veleno e alla condizione di avvelenato.
-Oggetto magico|Amuleto delle ferite chiuse|500|0|1|Amuleto non comune (sintonia). Quando stabilizzi, recuperi ai Dadi Vita massimi.
-Oggetto magico|Medaglione dei pensieri|600|0|1|Medaglione non comune (sintonia). 3 cariche: Individuazione dei pensieri (CD 13).
-Oggetto magico|Amuleto del devoto +1|1500|0|1|Amuleto non comune (sintonia da chierico/paladino). +1 ai tiri per colpire e alla CD degli incantesimi divini.
-Oggetto magico|Amuleto del devoto +2|4000|0|1|Amuleto raro (sintonia da chierico/paladino). +2 ai tiri per colpire e alla CD degli incantesimi divini.
-Oggetto magico|Amuleto del devoto +3|16000|0|1|Amuleto molto raro (sintonia da chierico/paladino). +3 ai tiri per colpire e alla CD degli incantesimi divini.
-Oggetto magico|Mantello della protezione|3500|0.5|1|Mantello non comune (sintonia). +1 alla CA e a tutti i tiri salvezza.
-Oggetto magico|Mantello elfico|500|0.5|1|Mantello non comune (sintonia). Vantaggio a Furtività; chi ti cerca con la Percezione ha svantaggio.
-Oggetto magico|Mantello della dispersione|3000|0.5|1|Mantello raro (sintonia). Proietta un'illusione: gli attacchi contro di te hanno svantaggio finché non subisci danni.
-Oggetto magico|Mantello del pipistrello|6000|0.5|1|Mantello raro (sintonia). Vantaggio a Furtività, visione al buio, volo in forma di pipistrello.
-Oggetto magico|Mantello dell'arrampicata|600|0.5|0|Mantello non comune. Velocità di scalata pari a quella a terra.
-Oggetto magico|Mantello dell'invisibilità|60000|0.5|1|Mantello leggendario (sintonia). Cappuccio: diventi invisibile (max 2 ore al giorno).
-Oggetto magico|Stivali elfici|500|0.5|0|Stivali non comuni. Passi silenziosi: vantaggio a Furtività.
-Oggetto magico|Stivali della velocità|4000|0.5|1|Stivali rari (sintonia). Azione bonus: velocità raddoppiata e attacchi di opportunità contro di te con svantaggio (10 min).
-Oggetto magico|Stivali della levitazione|4000|0.5|1|Stivali rari (sintonia). Levitazione a volontà su di te.
-Oggetto magico|Stivali del camminatore e del saltatore|500|0.5|1|Stivali non comuni (sintonia). Velocità +3 m e salti triplicati.
-Oggetto magico|Stivali della terra d'inverno|500|0.5|1|Stivali non comuni (sintonia). Ignori il terreno difficile di neve e ghiaccio, resistenza al freddo.
+Oggetto magico|Anello di protezione|3500|0.01|1|Anello raro (sintonia). +1 alla CA e a tutti i tiri salvezza.
+Oggetto magico|Anello di salto|600|0.01|1|Anello non comune (sintonia). Incantesimo Salto a volontà (solo su di te).
+Oggetto magico|Anello di nuotare|600|0.01|0|Anello non comune. Velocità di nuoto 12 m.
+Oggetto magico|Anello di caduta morbida|500|0.01|1|Anello non comune (sintonia). Caduta morbida su di te quando cadi.
+Oggetto magico|Anello dell'evasione|2000|0.01|1|Anello raro (sintonia). 3 cariche: l'esito di un TS DES fallito diventa un successo.
+Oggetto magico|Anello di rigenerazione|8000|0.01|1|Anello molto raro (sintonia). Recuperi 1d6 PF ogni 10 minuti e ricresce ciò che hai perso.
+Oggetto magico|Anello di schermatura mentale|800|0.01|1|Anello non comune (sintonia). Immune a individuazione dei pensieri e a divinazioni che leggono la mente.
+Oggetto magico|Anello di resistenza|4000|0.01|1|Anello raro (sintonia). Resistenza a un tipo di danno (dipende dalla gemma incastonata).
+Oggetto magico|Anello di influenza animale|1500|0.01|1|Anello raro (sintonia). 3 cariche: Amicizia con gli animali, Paura, Parlare con gli animali.
+Oggetto magico|Amuleto della salute|8000|0.1|1|Amuleto raro (sintonia). La tua COS diventa 19.
+Oggetto magico|Amuleto protettivo dai veleni|5000|0.1|1|Amuleto raro (sintonia). Immunità al veleno e alla condizione di avvelenato.
+Oggetto magico|Amuleto delle ferite chiuse|500|0.1|1|Amuleto non comune (sintonia). Quando stabilizzi, recuperi ai Dadi Vita massimi.
+Oggetto magico|Medaglione dei pensieri|600|0.1|1|Medaglione non comune (sintonia). 3 cariche: Individuazione dei pensieri (CD 13).
+Oggetto magico|Amuleto del devoto +1|1500|0.1|1|Amuleto non comune (sintonia da chierico/paladino). +1 ai tiri per colpire e alla CD degli incantesimi divini.
+Oggetto magico|Amuleto del devoto +2|4000|0.1|1|Amuleto raro (sintonia da chierico/paladino). +2 ai tiri per colpire e alla CD degli incantesimi divini.
+Oggetto magico|Amuleto del devoto +3|16000|0.1|1|Amuleto molto raro (sintonia da chierico/paladino). +3 ai tiri per colpire e alla CD degli incantesimi divini.
+Oggetto magico|Mantello della protezione|3500|1|1|Mantello non comune (sintonia). +1 alla CA e a tutti i tiri salvezza.
+Oggetto magico|Mantello elfico|500|1|1|Mantello non comune (sintonia). Vantaggio a Furtività; chi ti cerca con la Percezione ha svantaggio.
+Oggetto magico|Mantello della dispersione|3000|1|1|Mantello raro (sintonia). Proietta un'illusione: gli attacchi contro di te hanno svantaggio finché non subisci danni.
+Oggetto magico|Mantello del pipistrello|6000|1|1|Mantello raro (sintonia). Vantaggio a Furtività, visione al buio, volo in forma di pipistrello.
+Oggetto magico|Mantello dell'arrampicata|600|1|0|Mantello non comune. Velocità di scalata pari a quella a terra.
+Oggetto magico|Mantello dell'invisibilità|60000|1|1|Mantello leggendario (sintonia). Cappuccio: diventi invisibile (max 2 ore al giorno).
+Oggetto magico|Stivali elfici|500|1|0|Stivali non comuni. Passi silenziosi: vantaggio a Furtività.
+Oggetto magico|Stivali della velocità|4000|1|1|Stivali rari (sintonia). Azione bonus: velocità raddoppiata e attacchi di opportunità contro di te con svantaggio (10 min).
+Oggetto magico|Stivali della levitazione|4000|1|1|Stivali rari (sintonia). Levitazione a volontà su di te.
+Oggetto magico|Stivali del camminatore e del saltatore|500|1|1|Stivali non comuni (sintonia). Velocità +3 m e salti triplicati.
+Oggetto magico|Stivali della terra d'inverno|500|1|1|Stivali non comuni (sintonia). Ignori il terreno difficile di neve e ghiaccio, resistenza al freddo.
 Oggetto magico|Guanti da nuotatore e scalatore|500|0.3|1|Guanti non comuni (sintonia). Velocità di nuoto e scalata pari a quella a terra, +5 ad Atletica per quelle azioni.
 Oggetto magico|Guanti della forza dell'ogre|3000|0.5|1|Guanti non comuni (sintonia). La tua FOR diventa 19.
 Oggetto magico|Cintura della forza del gigante delle colline|4000|0.5|1|Cintura rara (sintonia). La tua FOR diventa 21.
@@ -707,14 +715,14 @@ Oggetto magico|Cappello del camuffamento|500|0.2|1|Cappello non comune (sintonia
 Oggetto magico|Occhiali della notte|500|0.1|0|Occhiali non comuni. Visione al buio 18 m (+18 m se già ce l'hai).
 Oggetto magico|Occhi dell'aquila|500|0.1|1|Lenti non comuni (sintonia). Vantaggio a Percezione basata sulla vista, vedi dettagli lontani.
 Oggetto magico|Lanterna del rivelatore|600|1|0|Lanterna non comune. Illumina 9 m e rivela creature invisibili nel raggio.
-Oggetto magico|Borsa conservante|4000|0.5|0|Borsa non comune: spazio interno di 0,5 m³ e fino a 250 kg, pesa sempre 7,5 kg.
+Oggetto magico|Borsa conservante|4000|2.5|0|Dentro è molto più grande che fuori: contiene fino a 250 kg e circa 1,8 m³ ma pesa sempre 2,5 kg. Il contenuto non conta nel carico.
 Oggetto magico|Zaino pratico|2000|2.5|0|Zaino raro: due tasche principali dimensionali, estrai l'oggetto che vuoi con un'azione bonus.
 Oggetto magico|Corda dell'arrampicata|500|1.5|0|Corda non comune di 18 m: sale, scende e si annoda al comando.
 Oggetto magico|Corda dell'intrappolamento|2000|1.5|0|Corda rara: immobilizza chi la subisce (TS DES CD 15).
-Oggetto magico|Pietra della buona fortuna|4200|0|1|Pietra non comune (sintonia). +1 ai tiri per le prove di caratteristica e ai TS.
-Oggetto magico|Pietra di Ioun (protezione)|4500|0|1|Pietra rara (sintonia). Orbita attorno a te: +1 alla CA.
-Oggetto magico|Pietra di Ioun (agilità)|4500|0|1|Pietra molto rara (sintonia). DES +2 (max 20).
-Oggetto magico|Scarabeo della protezione|40000|0|1|Scarabeo leggendario (sintonia). Vantaggio ai TS contro incantesimi, 12 cariche annullano morte e magie letali.
+Oggetto magico|Pietra della buona fortuna|4200|0.01|1|Pietra non comune (sintonia). +1 ai tiri per le prove di caratteristica e ai TS.
+Oggetto magico|Pietra di Ioun (protezione)|4500|0.01|1|Pietra rara (sintonia). Orbita attorno a te: +1 alla CA.
+Oggetto magico|Pietra di Ioun (agilità)|4500|0.01|1|Pietra molto rara (sintonia). DES +2 (max 20).
+Oggetto magico|Scarabeo della protezione|40000|0.01|1|Scarabeo leggendario (sintonia). Vantaggio ai TS contro incantesimi, 12 cariche annullano morte e magie letali.
 Oggetto magico|Sfera di cristallo|15000|3|1|Sfera rara (sintonia). Scrutare 1 volta al giorno (CD 17).
 Oggetto magico|Bacchetta dei dardi magici|500|0.5|0|Bacchetta non comune: 7 cariche, ogni carica lancia Dardo incantato (1° livello).
 Oggetto magico|Bacchetta del mago da guerra +1|1500|0.5|1|Bacchetta non comune (sintonia da incantatore). +1 ai tiri per colpire con gli incantesimi.
@@ -733,7 +741,7 @@ Oggetto magico|Strumento dei bardi: Bandora di Fochlucan|1500|1|1|Strumento non 
 Oggetto magico|Strumento dei bardi: Cetra di Mac-Fuirmidh|1500|1|1|Strumento non comune (sintonia da bardo). Incantesimi: Intralciare, Ferite curative, Protezione dal vento.
 Oggetto magico|Strumento dei bardi: Arpa di Anstruth|25000|1|1|Strumento molto raro (sintonia da bardo). Incantesimi di alto livello: Intralciare, Muro di fuoco, Lampo di luce.
 Oggetto magico|Corno di esplosione|7500|1|0|Corno raro: onda sonora (TS COS CD 15) 5d6 tuono a 4,5 m davanti a te; può esplodere (5% per uso).
-Oggetto magico|Specchio della prigionia|20000|2|0|Specchio raro: intrappola creature (TS CAR CD 15) in una cella extradimensionale.
+Oggetto magico|Specchio della prigionia|20000|25|0|Specchio raro: intrappola creature (TS CAR CD 15) in una cella extradimensionale.
 Oggetto magico|Orbe del dragone (cristallo)|30000|3|1|Orbe leggendario (sintonia da incantatore). Lancia Scrutare con vantaggio, controlla i draghi.
 Equipaggiamento|Zaino|2|2.5|0|Contiene fino a 30 kg o 30 l di materiale. Si indossa sulle spalle.
 Equipaggiamento|Sacco a pelo|1|3.5|0|Per dormire all'aperto.
@@ -743,7 +751,7 @@ Equipaggiamento|Tenda per 6 persone|10|25|0|Tenda spaziosa con telo impermeabile
 Equipaggiamento|Razioni (1 giorno)|0.5|1|0|Cibo secco per un giorno: carne secca, frutta secca, gallette.
 Equipaggiamento|Otre (2 litri)|0.2|2.5|0|Contiene 2 litri d'acqua (il peso comprende il contenuto).
 Equipaggiamento|Borraccia (1 litro)|0.02|1|0|Contiene 1 litro d'acqua.
-Equipaggiamento|Bottiglia di vino|10|0.7|0|Vino di buona qualità.
+Equipaggiamento|Bottiglia di vino|10|1.75|0|Vino di buona qualità.
 Equipaggiamento|Boccale di birra|0.04|0.5|0|Una pinta di birra.
 Equipaggiamento|Pagnotta di pane|0.02|0.5|0|Pane fresco.
 Equipaggiamento|Forma di formaggio|0.1|0.5|0|Formaggio stagionato.
@@ -754,11 +762,11 @@ Equipaggiamento|Lanterna a lente|10|1|0|Cono di luce intensa 18 m e fioca 18 m; 
 Equipaggiamento|Lampada|0.5|0.5|0|Luce intensa 4,5 m e fioca 9 m, 6 ore per fiasca d'olio.
 Equipaggiamento|Olio (fiasca)|0.1|0.5|0|Per lanterne e lampade; si può lanciare dopo averlo acceso.
 Equipaggiamento|Acciarino e pietra focaia|0.5|0.5|0|Accende un fuoco in 1 minuto (azione con esca).
-Equipaggiamento|Corda di canapa (15 m)|1|5|0|Resistente (2 PF, CD 17 per spezzarla).
+Equipaggiamento|Corda di canapa (15 m)|1|2.5|0|Resistente (2 PF, CD 17 per spezzarla).
 Equipaggiamento|Corda di seta (15 m)|10|2.5|0|Leggera e resistente (2 PF, CD 17 per spezzarla).
 Equipaggiamento|Arpione (rampino)|2|2|0|Si aggancia a sporgenze con una corda.
 Equipaggiamento|Catena (3 m)|5|5|0|10 PF, CD 20 per spezzarla.
-Equipaggiamento|Chiodi da arrampicata (10)|1|2.5|0|Fissano la corda alla roccia.
+Equipaggiamento|Chiodi da arrampicata (10)|0.5|1.25|0|Fissano la corda alla roccia.
 Equipaggiamento|Palo (3 m)|0.05|3.5|0|Per sondare il terreno e le trappole.
 Equipaggiamento|Piede di porco|2|2.5|0|Vantaggio alle prove di FOR per forzare con la leva.
 Equipaggiamento|Martello|1|1.5|0|Martello da lavoro.
@@ -776,8 +784,8 @@ Equipaggiamento|Cassa|5|12.5|0|Contiene fino a 150 kg o 0,35 m³.
 Equipaggiamento|Cesto|0.4|1|0|Cesto di vimini: 20 kg.
 Equipaggiamento|Barile|2|35|0|Contiene 150 litri di liquido.
 Equipaggiamento|Secchio|0.05|1|0|Contiene 6 litri.
-Equipaggiamento|Boccetta di vetro|1|0.25|0|Contiene 100 ml.
-Equipaggiamento|Bottiglia di vetro|2|1|0|Contiene 1,5 litri.
+Equipaggiamento|Boccetta di vetro|1|0|0|Contiene 100 ml.
+Equipaggiamento|Bottiglia di vetro|2|1|0|Contiene circa 0,7 litri.
 Equipaggiamento|Faretra|1|0.5|0|Contiene 20 frecce.
 Equipaggiamento|Contenitore per quadrelli|1|0.5|0|Contiene 20 quadrelli.
 Equipaggiamento|Astuccio per mappe o pergamene|1|0.5|0|Impermeabile: contiene 10 fogli o 5 pergamene.
@@ -879,15 +887,15 @@ Altro|Sfere di metallo (sacchetto da 1000)|1|1|0|Versate per terra coprono 3 m: 
 Altro|Aghi di ferro (sacchetto da 20)|1|1|0|Spargibili a terra: 1 perforante a chi li calpesta senza scarpe.
 Altro|Campane d'allarme (5)|5|0.5|0|Fili con campanelli per trappole di allarme.
 Altro|Cera sigillante|0.5|0|0|Per sigillare lettere.
-Altro|Sigillo di famiglia|5|0|0|Anello con il simbolo di un casato.
+Altro|Sigillo di famiglia|5|0.01|0|Anello con il simbolo di un casato.
 Altro|Libro di sapere|25|2.5|0|Saggio su un argomento a scelta: vantaggio alle prove di Intelligenza relative.
-Altro|Libro di storie|10|1.5|0|Raccolta di racconti e leggende.
+Altro|Libro di storie|10|2.5|0|Raccolta di racconti e leggende.
 Altro|Mappa del territorio|10|0|0|Mappa dettagliata della regione.
 Altro|Mappa del tesoro (antica)|100|0|0|Mappa ingiallita che indica un luogo remoto. Veridicità a discrezione del DM.
 Altro|Idolo di pietra|20|2|0|Statuetta di una divinità minore.
 Altro|Statuetta d'argento|250|1|0|Piccola statua preziosa.
 Altro|Calice d'oro|750|1|0|Coppa decorata con gemme.
-Altro|Anello con sigillo d'oro|50|0|0|Anello pregiato.
+Altro|Anello con sigillo d'oro|50|0.01|0|Anello pregiato.
 Altro|Collana di perle|1500|0.2|0|Gioiello di valore.
 Altro|Corona d'argento|2500|1|0|Corona con pietre incastonate.
 Altro|Scrigno decorato|100|5|0|Contenitore elegante per monete e gioielli.
@@ -895,16 +903,16 @@ Altro|Stendardo del reggimento|50|3|0|Bandiera di una compagnia.
 Altro|Ossa di drago (pezzo)|50|2|0|Frammento di scheletro di drago: curiosità o componente.
 Altro|Tenda di lusso (4 persone)|120|30|0|Tenda foderata con tappeti: riposo comodo.
 Altro|Cassa blindata|250|25|0|Ferro e serrature multiple: CD 20 per scassinarla.
-Altro|Marionetta|1|0|0|Giocattolo o strumento per spettacoli.
+Altro|Marionetta|1|0.2|0|Giocattolo o strumento per spettacoli.
 Pozione|Olio dell'eterealità|1900|0.5|0|Olio raro: spalmato sul corpo ti rende etereo per 1 ora (Forma eterea).
 Pozione|Olio della scivolosità|400|0.5|0|Olio non comune: effetto di Libertà di movimento per 8 ore, oppure unto sul terreno come Unto.`.split('\n').map(l=>{let a=l.split('|');return{c:a[0],n:a[1],p:Math.round(+a[2]*100),kg:+a[3],m:+a[4],d:a[5]}});
 const SHD2=`Arma|Frecce +1 (20)|150|0.5|0|Munizioni magiche non comuni: +1 ai tiri per colpire e ai danni. Si distruggono quando colpiscono.
 Arma|Frecce +2 (20)|600|0.5|0|Munizioni magiche rare: +2 ai tiri per colpire e ai danni. Si distruggono quando colpiscono.
-Arma|Quadrelli +1 (20)|150|0.7|0|Munizioni magiche per balestra: +1 ai tiri per colpire e ai danni.
-Arma|Frecce incendiarie (5)|60|0.3|0|Il bersaglio colpito subisce 1d6 danni da fuoco aggiuntivi; possono dare fuoco a materiali infiammabili.
-Arma|Frecce soporifere (5)|90|0.3|0|Punta intinta in un sonnifero: il bersaglio colpito fa un TS COS CD 12 o cade addormentato per 1 minuto (si sveglia se subisce danni).
-Arma|Frecce con punta da caccia (10)|8|0.3|0|Punta larga da caccia: +1 ai danni contro bestie non corazzate.
-Arma|Frecce sterminatrici (1)|600|0.05|1|Freccia rara: contro un tipo di creatura scelto alla creazione infligge 6d10 danni perforanti aggiuntivi (TS COS CD 17 per dimezzare).
+Arma|Quadrelli +1 (20)|150|0.75|0|Munizioni magiche per balestra: +1 ai tiri per colpire e ai danni.
+Arma|Frecce incendiarie (5)|60|0.125|0|Il bersaglio colpito subisce 1d6 danni da fuoco aggiuntivi; possono dare fuoco a materiali infiammabili.
+Arma|Frecce soporifere (5)|90|0.125|0|Punta intinta in un sonnifero: il bersaglio colpito fa un TS COS CD 12 o cade addormentato per 1 minuto (si sveglia se subisce danni).
+Arma|Frecce con punta da caccia (10)|8|0.25|0|Punta larga da caccia: +1 ai danni contro bestie non corazzate.
+Arma|Frecce sterminatrici (1)|600|0.025|1|Freccia rara: contro un tipo di creatura scelto alla creazione infligge 6d10 danni perforanti aggiuntivi (TS COS CD 17 per dimezzare).
 Arma|Pugnale d'argento|102|0.5|0|1d4 perforante, accurata, leggera, da lancio (6/18 m). Argentato: supera la resistenza di licantropi e di molti immondi.
 Arma|Spada corta d'argento|110|1|0|1d6 perforante, accurata, leggera. Argentata: supera la resistenza di licantropi e di molti immondi.
 Arma|Spada lunga d'argento|115|1.5|0|1d8 tagliente (1d10 a due mani). Argentata: supera la resistenza di licantropi e di molti immondi.
@@ -933,17 +941,17 @@ Arma|Ascia da lancio ritornante|3000|1|1|Ascia +1 non comune (sintonia). Dopo il
 Arma|Cerbottana dell'assassino|2500|0.5|1|Cerbottana +1 non comune (sintonia). Sul colpo con vantaggio infligge +1d4 danni da veleno.
 Armatura|Armatura di cuoio rinforzato|35|6|0|CA 12 + DES. Cuoio con inserti metallici; nessun requisito di forza.
 Armatura|Armatura di pelli spesse|20|10|0|CA 12 + DES (max 2). Pelli di bestia sovrapposte: svantaggio a Furtività in ambienti urbani.
-Armatura|Giaco di maglia elfico|900|10|0|CA 13 + DES (max 2). Maglia sottilissima: nessuno svantaggio a Furtività.
+Armatura|Giaco di maglia elfico|900|5|0|CA 13 + DES (max 2). Maglia sottilissima: nessuno svantaggio a Furtività.
 Armatura|Scudo da torre|40|8|0|+3 alla CA, richiede FOR 13, svantaggio a Furtività. Copertura totale se te ne accucci dietro (azione).
 Armatura|Scudo di legno|5|2|0|+1 alla CA. Leggero ma si spezza: un colpo critico contro di te lo distrugge.
 Armatura|Scudo borchiato|20|4|0|+2 alla CA. Può essere usato per attaccare: 1d4 contundente (competente se usi gli scudi).
 Armatura|Scudo da cavaliere|30|4|0|+2 alla CA. In sella ottieni +1 alla CA contro gli attacchi a distanza.
 Armatura|Elmo di ferro|8|1.5|0|Non cambia la CA. 1 volta per riposo lungo trasforma un colpo critico subito in un colpo normale (regola opzionale).
 Armatura|Armatura di cuoio dell'ombra|8000|5|1|Armatura di cuoio +1 rara (sintonia). CA 12 + DES +1; vantaggio alle prove di Furtività al buio.
-Armatura|Armatura del vento|9000|5|1|Armatura di cuoio borchiato +1 rara (sintonia). Velocità +3 m; nessuno svantaggio da terreno difficile non magico.
-Armatura|Armatura delle fiamme|11000|20|1|Armatura di scaglie +1 rara (sintonia). Resistenza ai danni da fuoco; chi ti colpisce in mischia subisce 1d4 fuoco.
-Armatura|Armatura del gelo|11000|20|1|Armatura di scaglie +1 rara (sintonia). Resistenza ai danni da freddo; immune all'effetto del freddo naturale.
-Armatura|Armatura silenziosa|2500|5|1|Armatura di cuoio borchiato non comune (sintonia). CA 12 + DES; nessuno svantaggio a Furtività.
+Armatura|Armatura del vento|9000|6.5|1|Armatura di cuoio borchiato +1 rara (sintonia). Velocità +3 m; nessuno svantaggio da terreno difficile non magico.
+Armatura|Armatura delle fiamme|11000|22.5|1|Armatura di scaglie +1 rara (sintonia). Resistenza ai danni da fuoco; chi ti colpisce in mischia subisce 1d4 fuoco.
+Armatura|Armatura del gelo|11000|22.5|1|Armatura di scaglie +1 rara (sintonia). Resistenza ai danni da freddo; immune all'effetto del freddo naturale.
+Armatura|Armatura silenziosa|2500|6.5|1|Armatura di cuoio borchiato non comune (sintonia). CA 12 + DES; nessuno svantaggio a Furtività.
 Armatura|Veste degli incantesimi|6000|2|1|Veste rara (sintonia, incantatori). CA 12 + DES; +1 ai TS contro magie.
 Armatura|Scudo del guardiano|4500|3|1|Scudo +1 non comune (sintonia). 1/giorno come reazione: un alleato entro 1,5 m aggiunge +2 alla CA fino all'inizio del tuo prossimo turno.
 Armatura|Scudo del sole|8000|3|1|Scudo +1 raro (sintonia). Come azione bonus emette luce intensa per 6 m: i nemici entro 3 m hanno svantaggio ai tiri per colpire contro di te (1 minuto, 1/giorno).
@@ -1004,18 +1012,18 @@ Pozione|Polvere di starnuto|15|0.1|0|Una creatura entro 1,5 m: TS COS CD 11 o pe
 Pozione|Unguento di erbe curative|25|0.2|0|Contiene 3 dosi: ciascuna cura 1d4 PF (azione, 10 minuti di applicazione).
 Pozione|Cataplasma antiveleno|50|0.3|0|Applicato in 1 minuto: termina un veleno in corso e +1 ai TS contro veleno per 1 ora.
 Pozione|Fiala del ritorno|400|0.25|0|Beve chi è stabile a 0 PF: torna cosciente a 1 PF. Una dose.
-Oggetto magico|Anello della luce|300|0|1|Anello non comune (sintonia). Il trucchetto Luce a volontà; 1/giorno Luce del giorno.
-Oggetto magico|Anello dell'arcano|2500|0|1|Anello non comune (sintonia, incantatori). +1 alla CD degli incantesimi di un livello a scelta (fino al 2°).
-Oggetto magico|Anello della volontà di ferro|3000|0|1|Anello raro (sintonia). Vantaggio ai TS contro charme e paura.
-Oggetto magico|Anello del fuoco minore|1500|0|1|Anello non comune (sintonia). Resistenza al fuoco; 1/giorno Mani brucianti (CD 13).
-Oggetto magico|Anello del respiro|1500|0|1|Anello non comune (sintonia). Respiri sott'acqua e in ambienti privi d'aria.
-Oggetto magico|Anello della visione|800|0|1|Anello non comune (sintonia). Vedi creature invisibili entro 3 m.
-Oggetto magico|Anello della furtività|2000|0|1|Anello non comune (sintonia). +2 alle prove di Furtività; la tua posizione non si rivela dopo un attacco con vantaggio.
-Oggetto magico|Anello dell'acrobata|1800|0|1|Anello non comune (sintonia). Vantaggio alle prove di Acrobazia; i salti sono più lunghi di 3 m.
-Oggetto magico|Amuleto del vigore|2500|0|1|Amuleto raro (sintonia). +10 PF massimi.
-Oggetto magico|Collana dell'adattamento|1800|0|1|Collana non comune (sintonia). Respiri in qualsiasi ambiente; vantaggio ai TS contro gas nocivi.
-Oggetto magico|Collana delle perle di preghiera|3500|0|1|Collana rara (sintonia). 5 perle: ogni perla permette di lanciare 1 incantesimo di cura ferite o benedizione.
-Oggetto magico|Ciondolo della memoria|600|0|1|Amuleto non comune (sintonia). Ricordi qualsiasi cosa tu abbia visto o letto nell'ultima settimana.
+Oggetto magico|Anello della luce|300|0.01|1|Anello non comune (sintonia). Il trucchetto Luce a volontà; 1/giorno Luce del giorno.
+Oggetto magico|Anello dell'arcano|2500|0.01|1|Anello non comune (sintonia, incantatori). +1 alla CD degli incantesimi di un livello a scelta (fino al 2°).
+Oggetto magico|Anello della volontà di ferro|3000|0.01|1|Anello raro (sintonia). Vantaggio ai TS contro charme e paura.
+Oggetto magico|Anello del fuoco minore|1500|0.01|1|Anello non comune (sintonia). Resistenza al fuoco; 1/giorno Mani brucianti (CD 13).
+Oggetto magico|Anello del respiro|1500|0.01|1|Anello non comune (sintonia). Respiri sott'acqua e in ambienti privi d'aria.
+Oggetto magico|Anello della visione|800|0.01|1|Anello non comune (sintonia). Vedi creature invisibili entro 3 m.
+Oggetto magico|Anello della furtività|2000|0.01|1|Anello non comune (sintonia). +2 alle prove di Furtività; la tua posizione non si rivela dopo un attacco con vantaggio.
+Oggetto magico|Anello dell'acrobata|1800|0.01|1|Anello non comune (sintonia). Vantaggio alle prove di Acrobazia; i salti sono più lunghi di 3 m.
+Oggetto magico|Amuleto del vigore|2500|0.1|1|Amuleto raro (sintonia). +10 PF massimi.
+Oggetto magico|Collana dell'adattamento|1800|0.1|1|Collana non comune (sintonia). Respiri in qualsiasi ambiente; vantaggio ai TS contro gas nocivi.
+Oggetto magico|Collana delle perle di preghiera|3500|0.1|1|Collana rara (sintonia). 5 perle: ogni perla permette di lanciare 1 incantesimo di cura ferite o benedizione.
+Oggetto magico|Ciondolo della memoria|600|0.1|1|Amuleto non comune (sintonia). Ricordi qualsiasi cosa tu abbia visto o letto nell'ultima settimana.
 Oggetto magico|Cappello dell'incantatore|3000|0.2|1|Cappello raro (sintonia). 1/giorno recuperi uno slot incantesimo di 2° livello speso.
 Oggetto magico|Mantello del ranger|1500|1|1|Mantello non comune (sintonia). Vantaggio a Furtività in natura; non lasci tracce se non vuoi.
 Oggetto magico|Mantello del ladro|3500|1|1|Mantello raro (sintonia). 1/giorno: Passo velato; vantaggio alle prove di Rapidità di mano.
@@ -1040,16 +1048,16 @@ Oggetto magico|Polvere della sparizione|350|0.1|0|Pizzico non comune: ti rende i
 Oggetto magico|Polvere dell'asciuttezza|120|0.1|0|Pizzico non comune: assorbe fino a 15 litri d'acqua e la rende una piccola sfera.
 Oggetto magico|Pietra del messaggio|500|0.2|0|Pietra non comune: 1/giorno invia un messaggio di 25 parole a una creatura sulla stessa isola/città.
 Oggetto magico|Sfera dell'oscurità|450|0.5|0|Sfera non comune: crea una sfera d'oscurità magica di 4,5 m (1 minuto, 1/giorno).
-Oggetto magico|Tappeto volante piccolo|11000|2|0|Tappeto raro: 1 ora/giorno di volo a 18 m, trasporta fino a 100 kg.
+Oggetto magico|Tappeto volante piccolo|11000|4|0|Tappeto raro: 1 ora/giorno di volo a 18 m, trasporta fino a 100 kg.
 Oggetto magico|Scopa del viaggio|2500|1.5|0|Scopa non comune: vola a 12 m per 1 ora/giorno, trasporta fino a 90 kg.
 Oggetto magico|Statuetta del lupo|3000|0.2|0|Statuetta rara: diventa un lupo fedele per 1 ora (1/giorno) come bestia amica.
-Oggetto magico|Stella protettrice|2200|0|1|Pendaglio non comune (sintonia). +1 ai TS; 1/giorno: Protezione dal bene e dal male su di te.
-Oggetto magico|Occhio del cacciatore|1200|0|1|Monocolo non comune (sintonia). Vedi le tracce come se fossero fresche e hai vantaggio alle prove di Sopravvivenza.
+Oggetto magico|Stella protettrice|2200|0.05|1|Pendaglio non comune (sintonia). +1 ai TS; 1/giorno: Protezione dal bene e dal male su di te.
+Oggetto magico|Occhio del cacciatore|1200|0.05|1|Monocolo non comune (sintonia). Vedi le tracce come se fossero fresche e hai vantaggio alle prove di Sopravvivenza.
 Oggetto magico|Corona dell'intelletto|3500|0.4|1|Corona rara (sintonia). INT 19 finché la indossi; vantaggio ai TS INT.
-Oggetto magico|Orecchino della vigilanza|900|0|1|Orecchino non comune (sintonia). Non puoi essere sorpreso e senti i pericoli entro 9 m anche mentre dormi.
-Oggetto magico|Libro del vigore|3000|0.5|0|Libro raro: leggerlo in 24 ore porta COS +2 (max 24). Si consuma.
-Oggetto magico|Libro della sapienza|3000|0.5|0|Libro raro: leggerlo in 24 ore porta INT +2 (max 24). Si consuma.
-Oggetto magico|Libro della volontà|3000|0.5|0|Libro raro: leggerlo in 24 ore porta SAG +2 (max 24). Si consuma.
+Oggetto magico|Orecchino della vigilanza|900|0.01|1|Orecchino non comune (sintonia). Non puoi essere sorpreso e senti i pericoli entro 9 m anche mentre dormi.
+Oggetto magico|Libro del vigore|3000|2.5|0|Libro raro: leggerlo in 24 ore porta COS +2 (max 24). Si consuma.
+Oggetto magico|Libro della sapienza|3000|2.5|0|Libro raro: leggerlo in 24 ore porta INT +2 (max 24). Si consuma.
+Oggetto magico|Libro della volontà|3000|2.5|0|Libro raro: leggerlo in 24 ore porta SAG +2 (max 24). Si consuma.
 Oggetto magico|Sacca delle meraviglie|900|0.5|0|Sacca non comune: estrae un piccolo oggetto casuale ogni giorno (d10: candela, corda, fiasca, moneta, chiave, ecc.).
 Materiali|Seta di ragno gigante (1 mq)|40|0.2|0|Fibra resistente e sottilissima; usata per corde leggere e componenti magici.
 Materiali|Ala di pipistrello|1|0.1|0|Componente comune per magie di volo o ecolocalizzazione.
@@ -1060,10 +1068,10 @@ Materiali|Cristallo di mana (piccolo)|150|0.2|0|Cristallo non comune che immagaz
 Materiali|Polvere di stelle|75|0.1|0|Polvere luminescente: componente per magie di luce e divinazione.
 Materiali|Rubino grezzo|50|0.1|0|Pietra preziosa non lavorata da 50 MO.
 Materiali|Ferro meteoritico (0,5 kg)|120|0.5|0|Metallo scuro caduto dal cielo; si lavora in lame leggere.
-Materiali|Ossidiana|10|0.1|0|Pietra scura vitrea da 10 MO; si può scheggiare in lame rituali.
-Materiali|Ambra|100|0.1|0|Gemma da 100 MO con antichi insetti intrappolati.
-Materiali|Corallo|100|0.1|0|Gemma organica rossa da 100 MO.
-Materiali|Giaietto|100|0.1|0|Gemma nera lucente da 100 MO.
+Materiali|Ossidiana|10|0.01|0|Pietra scura vitrea da 10 MO; si può scheggiare in lame rituali.
+Materiali|Ambra|100|0.01|0|Gemma da 100 MO con antichi insetti intrappolati.
+Materiali|Corallo|100|0.01|0|Gemma organica rossa da 100 MO.
+Materiali|Giaietto|100|0.01|0|Gemma nera lucente da 100 MO.
 Materiali|Avorio (zanna)|250|2|0|Zanna intera lavorabile (250 MO).
 Materiali|Ginseng selvatico|5|0.1|0|Radice stimolante usata in infusi: vantaggio ai TS COS contro l'affaticamento (1 ora).
 Materiali|Aglio (treccia)|1|0.5|0|Alcune creature (vampiri) lo temono; usato come componente rituale.
@@ -1094,13 +1102,13 @@ Equipaggiamento|Borsa da cintura|0.5|0.5|0|Contiene fino a 2 kg di oggetti picco
 Equipaggiamento|Borsellino per monete|0.5|0.1|0|Contiene fino a 50 monete senza tintinnare.
 Equipaggiamento|Fodero (spada o pugnale)|1|0.5|0|Cuoio per lame: sguainare è un'interazione gratuita.
 Equipaggiamento|Fiaschetta di metallo|2|0.5|0|Contiene 1 l di liquido; non si rompe.
-Equipaggiamento|Paiolo di ferro|2|2.5|0|Per cucinare per 6 persone.
+Equipaggiamento|Paiolo di ferro|2|5|0|Per cucinare per 6 persone.
 Equipaggiamento|Cavalletto da campo|3|2|0|Sgabello e tavolino richiudibile.
 Equipaggiamento|Gong da allarme|5|3|0|Si sente fino a 150 m: avvisa di un pericolo.
 Equipaggiamento|Lanterna da miniera|8|2|0|Luce intensa per 12 m (e fioca altri 12 m), 8 ore con 1 fiasca d'olio.
 Equipaggiamento|Riserva d'olio (5 fiasche)|0.5|2.5|0|Olio per lanterne e lampade.
-Equipaggiamento|Pacchetto del cacciatore|20|8|0|Zaino, trappole, rete, corda (15 m), razioni (5 giorni), otre.
-Equipaggiamento|Pacchetto del ladro esperto|25|7|0|Zaino, grimaldelli, rampino, corda di seta (15 m), 10 chiodi, lanterna schermata.
+Equipaggiamento|Pacchetto del cacciatore|20|26.5|0|Zaino, trappole, rete, corda (15 m), razioni (5 giorni), otre.
+Equipaggiamento|Pacchetto del ladro esperto|25|9.75|0|Zaino, grimaldelli, rampino, corda di seta (15 m), 10 chiodi, lanterna schermata.
 Equipaggiamento|Cintura portattrezzi|3|0.5|0|Cintura con anelli e taschine per 6 piccoli utensili.
 Equipaggiamento|Cuscino da viaggio|0.5|0.3|0|Dormire con lui rende il riposo più comodo.
 Equipaggiamento|Sacca impermeabile|1|0.5|0|Cuoio cerato: tiene asciutto il contenuto, anche sott'acqua.
@@ -1128,7 +1136,7 @@ Strumenti|Strumenti da intagliatore di gemme|80|1|0|Competenza per lavorare e va
 Strumenti|Strumenti da liutaio|60|3|0|Competenza per costruire e accordare strumenti a corda.
 Strumenti|Kit da scasso perfezionato|75|1|0|Arnesi migliori: +1 alle prove con gli attrezzi da scasso.
 Strumenti|Kit del curatore avanzato|50|4|0|Aggiunge garze, balsami e bende: +1 alle prove di Medicina per curare.
-Strumenti|Strumenti da calderaio|50|4|0|Competenza per riparare utensili e pentole.
+Strumenti|Strumenti da calderaio|50|5|0|Competenza per riparare utensili e pentole.
 Strumenti|Strumenti da tipografo|100|5|0|Competenza per stampare documenti con caratteri mobili.
 Strumenti|Arpa|30|1.5|0|Strumento musicale a corde da 30 MO.
 Strumenti|Violino|30|0.5|0|Strumento musicale ad arco.
@@ -1148,14 +1156,14 @@ Cavalcature|Dromedario|50|0|0|Cavalcatura Grande: PF 13, CA 9, velocità 12 m, t
 Cavalcature|Bue|15|0|0|Cavalcatura Grande: PF 15, CA 10, velocità 9 m, tira carichi fino a 400 kg.
 Cavalcature|Mulo da soma robusto|60|0|0|Cavalcatura Media: PF 11, CA 10, velocità 12 m, trasporta 210 kg.
 Cavalcature|Rinoceronte da guerra|3500|0|0|Cavalcatura Grande: PF 45, CA 11, velocità 15 m, carica 2d8+5 contundenti.
-Cavalcature|Sella da torneo|150|10|0|Sella rinforzata: vantaggio ai TS contro il disarcionamento.
+Cavalcature|Sella da torneo|150|15|0|Sella rinforzata: vantaggio ai TS contro il disarcionamento.
 Cavalcature|Staffe (paio)|0.5|1|0|Aiutano a restare in sella: nessuna prova per montare/smontare in combattimento.
 Cavalcature|Redini decorate|10|0.5|0|Cuoio lavorato e borchie: vantaggio alle prove di Persuasione con i nobili.
 Cavalcature|Barca fluviale|1500|200|0|Barca piatta lunga 9 m per 6 persone e 1 t di carico. Velocità 4 km/h.
 Cavalcature|Zattera|50|100|0|Piattaforma di tronchi per 4 persone.
 Cavalcature|Kayak|100|15|0|Piccola imbarcazione per 1 persona, molto veloce.
 Cavalcature|Veliero da pesca|4000|500|0|Barca a vela lunga 12 m per 8 persone e 3 t di merci.
-Cavalcature|Cocchio da guerra|1000|150|0|Carro da guerra a 2 cavalli per 2 persone; velocità 18 m.
+Cavalcature|Cocchio da guerra|1000|50|0|Carro da guerra a 2 cavalli per 2 persone; velocità 18 m.
 Cavalcature|Portantina|200|60|0|Sedia nobile portata da 4 persone.
 Altro|Chiave scheletro|40|0.1|0|Chiave grezza: vantaggio alle prove per scassinare serrature semplici (1 uso/serratura).
 Altro|Dado truccato|2|0|0|Dado che favorisce un numero: vantaggio a un tiro di gioco d'azzardo (CD 14 per notarlo).
@@ -1170,17 +1178,17 @@ Altro|Messaggio sigillato|1|0.1|0|Lettera chiusa con ceralacca: un contratto o u
 Altro|Gabbia per uccelli|5|1|0|Piccola gabbia con un uccello: può portare messaggi (50 km al giorno).
 Altro|Pergamena di nobiltà|2000|0.1|0|Titolo cavalleresco ufficiale: vantaggio alle prove di Persuasione con i nobili.
 Altro|Lettera di credito (500 MO)|500|0|0|Prelevabile presso una banca o un mercante autorizzato.
-Altro|Acqua sacra del fiume (fiasca)|25|1|0|Benedetta in un tempio: fa 2d6 radiante a un non morto o immondo se lanciata.
+Altro|Acqua sacra del fiume (fiasca)|25|0.5|0|Benedetta in un tempio: fa 2d6 radiante a un non morto o immondo se lanciata.
 Altro|Reliquia di un santo|600|2|0|Piccola urna: +1 alle prove di Religione; molto ricercata dai chierici.
 Altro|Scatola musicale|85|1|0|Scatola con carillon: suona una melodia per 1 minuto (1/giorno).
 Altro|Cornice dorata|75|2|0|Cornice antica senza dipinto, 75 MO.
 Altro|Calice d'argento|25|0.5|0|Calice di valore, 25 MO.
-Altro|Anello con zaffiro|250|0|0|Anello di buona fattura da 250 MO.
-Altro|Spilla di rubino|750|0|0|Spilla antica con rubino, 750 MO.
+Altro|Anello con zaffiro|250|0.01|0|Anello di buona fattura da 250 MO.
+Altro|Spilla di rubino|750|0.02|0|Spilla antica con rubino, 750 MO.
 Altro|Diadema di perle|900|0.2|0|Diadema da 900 MO.
 Altro|Bracciale d'oro|250|0.2|0|Bracciale da 250 MO.
 Altro|Profumo raro|120|0.2|0|Fragranza orientale: vantaggio a una prova di Persuasione nell'alta società.
-Altro|Libro proibito|1500|1.5|0|Tomo oscuro: chi lo legge può conoscere un rituale (a scelta del DM).
+Altro|Libro proibito|1500|2.5|0|Tomo oscuro: chi lo legge può conoscere un rituale (a scelta del DM).
 Altro|Bandiera dei pirati|20|0.5|0|Bandiera nera: intimidisce gli equipaggi più piccoli.
 Altro|Cassa del tesoro piccola|100|8|0|Cassa chiusa a chiave (CD 15 per scassinare) con tesori casuali (1d4 x 50 MO).
 Altro|Rete da pesca|4|3|0|Larga 3 m: pesca o intralcia una creatura piccola (azione).
@@ -1191,14 +1199,17 @@ const dShList=()=>[...SHD,...SHD2,...dShGen()];
 function dShMiss(c){let d=DD();return dShList().filter(x=>(!c||x.c==c)&&!d.sh.some(y=>y.n==x.n))}
 function dShAdd(c){let d=DD(),m=dShMiss(c);m.forEach(x=>d.sh.push({...x}));sv();closeM();R();T(m.length?m.length+' oggetti aggiunti al negozio':'Il negozio ha già tutto il catalogo')}
 function dShCat(){let d=DD(),all=dShMiss('').length;MO(`<h3>Catalogo del negozio</h3><p class="mu">Aggiunge al negozio gli oggetti del catalogo che non ci sono ancora (nome diverso). Prezzi indicativi in monete di rame (100 MR = 1 MO).</p><button class="b" onclick="dShAdd('')">Aggiungi tutto (${all} nuovi)</button><p class="mu" style="margin-top:10px">Oppure per categoria:</p>${SHC.map(c=>`<div class="row" style="cursor:default"><span>${c} <small class="mu">${dShMiss(c).length} nuovi</small></span><button class="chip" onclick="dShAdd('${jsA(c)}')">Aggiungi</button></div>`).join('')}<button class="b o" style="margin-top:10px" onclick="closeM()">Chiudi</button>`)}
-function dNgRows(){let d=DD(),q=NQ.trim().toLowerCase(),it=d.sh.map((x,i)=>({x,i})).filter(y=>(!NF||y.x.c==NF)&&(!q||(y.x.n+' '+(y.x.d||'')).toLowerCase().includes(q)));if(NS=='n')it.sort((a,b)=>a.x.n.localeCompare(b.x.n));else if(NS=='a')it.sort((a,b)=>a.x.p-b.x.p);else if(NS=='d')it.sort((a,b)=>b.x.p-a.x.p);let tot=it.length;it=it.slice(0,NP);return`<p class="mu">${tot} oggetti${tot>NP?' (mostro i primi '+NP+')':''}</p>`+it.map(y=>`<div class="c"><div class="r" style="justify-content:space-between"><b>${y.x.n}</b><span>${pf(y.x.p)}</span></div><small class="mu">${y.x.c}${y.x.kg?' - '+fmt(y.x.kg)+' kg':''}${y.x.m?' - magico (sintonia)':''}</small><p>${y.x.d||''}</p><div class="r"><button class="b" onclick="dBuy(${y.i})">Vendi</button><button class="b o" onclick="dShM(${y.i})">Modifica</button><button class="chip" onclick="DD().sh.splice(${y.i},1);sv();R()">Elimina</button></div></div>`).join('')+(tot>NP?`<button class="b o" onclick="NP+=40;dNgUp()">Mostra altri 40</button>`:'')||'<p class="mu">Nessun oggetto trovato.</p>'}
+function dNgRow(y){return`<div class="it sp"><details ontoggle="if(this.open)NGO.add(${y.i});else NGO.delete(${y.i})" ${NGO.has(y.i)?'open':''}><summary><b>${y.x.n}</b><br><small class="mu">${pf(y.x.p)}${y.x.kg?' - '+fmt(y.x.kg)+' kg':''}${y.x.m?' - magico (sintonia)':''}</small></summary>${y.x.d?`<p style="margin:6px 0"><small>${y.x.d}</small></p>`:''}<small class="mu">${y.x.c}</small><div class="r" style="margin-top:6px"><button class="chip" onclick="dShM(${y.i})">Modifica</button><button class="chip" onclick="dShDel(${y.i})">Elimina</button></div></details><button class="b" onclick="dBuy(${y.i})">Vendi</button></div>`}
+function dNgRows(){let d=DD(),q=NQ.trim().toLowerCase(),all=d.sh.map((x,i)=>({x,i}));if(!q&&!NF&&NS==''){return SHC.map(c=>{let it=all.filter(y=>y.x.c==c);if(!it.length)return'';let lim=NGL[c]||40;return`<details class="c" ontoggle="if(this.open)NGC.add('${c}');else NGC.delete('${c}')" ${NGC.has(c)?'open':''}><summary style="cursor:pointer"><b>${c}</b> <small class="mu">${it.length}</small></summary>${it.slice(0,lim).map(dNgRow).join('')}${it.length>lim?`<button class="b o" style="margin-top:8px" onclick="NGL['${c}']=${lim+40};dNgUp()">Mostra altri 40</button>`:''}</details>`}).join('')||'<p class="mu">Il negozio è vuoto.</p>'}let it=all.filter(y=>(!NF||y.x.c==NF)&&(!q||(y.x.n+' '+(y.x.d||'')).toLowerCase().includes(q)));if(NS=='n')it.sort((a,b)=>a.x.n.localeCompare(b.x.n));else if(NS=='a')it.sort((a,b)=>a.x.p-b.x.p);else if(NS=='d')it.sort((a,b)=>b.x.p-a.x.p);let tot=it.length;if(!tot)return'<p class="mu">Nessun oggetto trovato.</p>';return`<div class="c"><small class="mu">${tot} oggetti${tot>NP?' (i primi '+NP+')':''}</small>${it.slice(0,NP).map(dNgRow).join('')}${tot>NP?`<button class="b o" style="margin-top:8px" onclick="NP+=40;dNgUp()">Mostra altri 40</button>`:''}</div>`}
+const NGC=new Set(),NGL={};
+function dShDel(i){let x=DD().sh[i];if(!x||typeof confirm=='function'&&!confirm('Togliere '+x.n+' dal negozio?'))return;DD().sh.splice(i,1);NGO.clear();sv();R()}
 function dNgUp(){let e=$('ngl');if(e)e.innerHTML=dNgRows()}
-function dNg(){let d=DD();if(!d.shc){d.shc=1;if(!d.sh.length)dShBase();dShMiss('').forEach(x=>d.sh.push({...x}));sv()}if((d.shv||0)<2){d.shv=2;SHD2.forEach(x=>{if(!d.sh.some(y=>y.n==x.n))d.sh.push({...x})});sv()}return`<div class="c"><b>Negozio</b><label>Categoria<select onchange="NF=this.value;NP=40;R()"><option value="">Tutte</option>${SHC.map(c=>`<option ${NF==c?'selected':''}>${c}</option>`).join('')}</select></label><label>Cerca<input id="ngq" value="${NQ.replace(/"/g,'&quot;')}" placeholder="Nome o descrizione" oninput="NQ=this.value;NP=40;dNgUp()"></label><label>Ordina<select onchange="NS=this.value;R()"><option value="" ${NS==''?'selected':''}>Ordine del catalogo</option><option value="n" ${NS=='n'?'selected':''}>Nome</option><option value="a" ${NS=='a'?'selected':''}>Prezzo crescente</option><option value="d" ${NS=='d'?'selected':''}>Prezzo decrescente</option></select></label><div class="r"><button class="b" onclick="dShM(-1)">+ Oggetto</button><button class="b o" onclick="dShCat()">Catalogo</button></div></div><div id="ngl">${dNgRows()}</div>`}
+function dNg(){let d=DD();if(!d.shc){d.shc=1;if(!d.sh.length)dShBase();dShMiss('').forEach(x=>d.sh.push({...x}));sv()}if((d.shv||0)<2){d.shv=2;SHD2.forEach(x=>{if(!d.sh.some(y=>y.n==x.n))d.sh.push({...x})});sv()}let cnt=c=>d.sh.filter(x=>x.c==c).length;return`<div class="c"><div class="hd"><b>Negozio</b><small class="mu">${d.sh.length} oggetti</small></div><input id="ngq" value="${NQ.replace(/"/g,'&quot;')}" placeholder="Cerca per nome o descrizione" oninput="NQ=this.value;NP=40;dNgUp()"><div class="r" style="margin-top:6px"><select style="flex:1" onchange="NF=this.value;NP=40;R()"><option value="">Tutte le categorie</option>${SHC.map(c=>`<option value="${c}" ${NF==c?'selected':''}>${c} (${cnt(c)})</option>`).join('')}</select><select style="flex:1" onchange="NS=this.value;R()"><option value="" ${NS==''?'selected':''}>Per categoria</option><option value="n" ${NS=='n'?'selected':''}>Per nome</option><option value="a" ${NS=='a'?'selected':''}>Prezzo crescente</option><option value="d" ${NS=='d'?'selected':''}>Prezzo decrescente</option></select></div><div class="r" style="margin-top:6px"><button class="b o" onclick="dShM(-1)">+ Oggetto</button><button class="b o" onclick="dShCat()">Aggiungi dal catalogo</button></div></div><div id="ngl">${dNgRows()}</div>`}
 function dShM(i){let x=i>=0?DD().sh[i]:{n:'',c:'Arma',p:100,d:'',kg:0,m:0},u=x.p%100==0?3:x.p%10==0?1:0,v=x.p/CV[u][1];MO(`<h3>Oggetto</h3><label>Nome<input id="sn1" value="${x.n}"></label><label>Categoria<select id="sn2">${SHC.map(c=>`<option ${x.c==c?'selected':''}>${c}</option>`).join('')}</select></label><div class="r"><label style="flex:1">Prezzo<input id="sn3" type="number" value="${v}"></label><label style="flex:1">Moneta<select id="sn4">${CV.map((c,j)=>`<option value="${j}" ${j==u?'selected':''}>${c[0]}</option>`).join('')}</select></label></div><div class="r"><label style="flex:1">Peso (kg)<input id="sn6" type="number" step="0.1" value="${x.kg||0}"></label><label style="flex:1;align-self:flex-end"><input type="checkbox" id="sn7" ${x.m?'checked':''}> Magico (sintonia)</label></div><label>Caratteristiche e descrizione<textarea id="sn5" rows="4">${x.d||''}</textarea></label><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="sn8" style="width:auto" ${btOf(x)?'checked':''}> Usabile in battaglia (si consuma)</label><div class="r" style="margin:6px 0"><input id="sn9" placeholder="Dadi (es. 2d4+2), se servono" value="${sxE((btOf(x)||{}).d||'')}" style="flex:2"><select id="sna" style="flex:1">${[['cura','Cura'],['danno','Danno'],['','Altro']].map(a=>`<option value="${a[0]}" ${(btOf(x)?btOf(x).k:'cura')==a[0]?'selected':''}>${a[1]}</option>`).join('')}</select></div><button class="b" onclick="dShS(${i})">Salva</button>`)}
 function dShS(i){let o={n:$('sn1').value||'Oggetto',c:$('sn2').value,p:Math.round((+$('sn3').value||0)*CV[+$('sn4').value][1]),d:$('sn5').value,kg:Math.max(0,+$('sn6').value||0),m:$('sn7').checked?1:0};o.bt=$('sn8').checked?1:0;if(o.bt){o.bd=($('sn9').value||'').trim();if(o.bd&&!parse(o.bd))return T('Dadi non validi: scrivi per esempio 2d4+2');o.bk=$('sna').value}if(i>=0)DD().sh[i]=o;else DD().sh.push(o);closeM();sv();R()}
 function dShSeed(){dShBase();sv();R()}
 function dBuy(i){let x=DD().sh[i];if(!S.chs.length)return T('Non ci sono personaggi a cui vendere');MO(`<h3>Vendi: ${x.n} (${pf(x.p)})</h3>${S.chs.map((c,j)=>`<div class="row" onclick="dBuy2(${i},${j})"><span>${c.nm}</span><small>${pf(CV.reduce((a,v)=>a+(co(c)[v[0]]||0)*v[1],0))}</small></div>`).join('')}`)}
-function dBuy2(i,j){let x=DD().sh[i],c=S.chs[j],o=co(c),tot=CV.reduce((a,v)=>a+(o[v[0]]||0)*v[1],0);if(tot<x.p){closeM();return T(c.nm+' non ha abbastanza monete')}if(x.kg&&cap(c)-load(c)<x.kg-1e-9){closeM();return T(c.nm+' non può portare altro peso ('+fmt(x.kg)+' kg)')}tot-=x.p;[['MP',1000],['MO',100],['ME',50],['MA',10],['MR',1]].forEach(([n,v])=>{o[n]=Math.floor(tot/v);tot-=o[n]*v});let ex=c.it.find(y=>y.n==x.n);if(ex)ex.q++;else c.it.push({n:x.n,q:1,m:x.m?1:0,a:0,d:x.d||'',kg:x.kg||0,...(x.bt!=null?{bt:x.bt,bd:x.bd||'',bk:x.bk||''}:{})});closeM();sv();T(`${x.n} venduto a ${c.nm}`)}
+function dBuy2(i,j){let x=DD().sh[i],c=S.chs[j],o=co(c),tot=CV.reduce((a,v)=>a+(o[v[0]]||0)*v[1],0);if(tot<x.p){closeM();return T(c.nm+' non ha abbastanza monete')}if(x.kg&&x.c!='Cavalcature'&&cap(c)-load(c)<x.kg-1e-9){closeM();return T(c.nm+' non può portare altro peso ('+fmt(x.kg)+' kg)')}tot-=x.p;[['MP',1000],['MO',100],['ME',50],['MA',10],['MR',1]].forEach(([n,v])=>{o[n]=Math.floor(tot/v);tot-=o[n]*v});let ex=c.it.find(y=>y.n==x.n);if(ex)ex.q++;else c.it.push({n:x.n,q:1,m:x.m?1:0,a:0,d:x.d||'',kg:x.kg||0,...(x.c=='Cavalcature'?{vc:1}:{}),...(x.bt!=null?{bt:x.bt,bd:x.bd||'',bk:x.bk||''}:{})});closeM();sv();T(`${x.n} venduto a ${c.nm}`)}
 /* --- schermata --- */
 function dmScreen(){fxSync();let t={fg:dFg,cb:dCb,ev:dEv,ng:dNg}[DT]();return`<header><div><b>Master</b><small>Strumenti per il DM</small></div><button class="b o" onclick="S.role=null;sv();R()">Esci</button></header><main>${DT=='cb'?lvPanel():''}${t}</main><nav>${[['fg','Forgia'],['cb','Scontro'],['ev','Eventi'],['ng','Negozio']].map(a=>`<button class="${DT==a[0]?'on':''}" onclick="DT='${jsA(a[0])}';R()">${a[1]}</button>`).join('')}</nav>`}
 /* wizard */
@@ -1262,15 +1273,15 @@ const SPO=new Set();
 function spOp(i,o){let s=C().sp[i];if(!s)return;if(o)SPO.add(s.n);else SPO.delete(s.n)}
 function pip(l,u){let c=C();c.us[l]=Math.max(0,(c.us[l]||0)+(u?1:-1));sv();R()}
 function addS(){let c=C(),cat=cl3();let n=(cat.length?cat:SPS)[$('cs').value];if(!okAdd(n))return;c.sp.push({...n});sv();R()}
-function cast(i,want){if(UNT())return T('Non puoi lanciare incantesimi con un\'armatura senza addestramento');let c=C(),s=c.sp[i],sl=slots(),lv=0,mt=mat(s),it=mt&&c.it.find(x=>x.n.toLowerCase()==mt.toLowerCase()&&x.q>0);if(mt&&!it)return T('Manca il materiale: '+mt);let fr=s.f&&!s.u;if(fr)s.u=1;if(s.l>0&&!fr){for(let l=Math.max(s.l,want||0);l<=9;l++)if(sl[l-1]>(c.us[l]||0)){lv=l;break}if(!lv){let a=sl.some(x=>x);if(a||s.u)return T(a?'Nessuno slot disponibile':'Già lanciato (si recupera con il riposo lungo)');s.u=1;lv=s.l}else c.us[lv]=(c.us[lv]||0)+1}if(it){it.q--;if(it.q<1)c.it.splice(c.it.indexOf(it),1)}sv();R();if(/attacco/i.test(s.no))satk(i);else if(parse(s.dm))sdmg(i,0,lv);else T(`<b>${s.n}</b><p>Lanciato${lv?' con slot di livello '+lv:''}</p>${/TS /.test(s.no)?`<small>CD ${spDC()}</small>`:''}`)}
+function cast(i,want){if(UNT())return T('Non puoi lanciare incantesimi con un\'armatura senza addestramento');let c=C(),s=c.sp[i],sl=slots(),lv=0,mt=mat(s),it=mt&&c.it.find(x=>x.n.toLowerCase()==mt.toLowerCase()&&x.q>0);if(mt&&!it)return T('Manca il materiale: '+mt);let fr=s.f&&!s.u;if(fr)s.u=1;if(s.l>0&&!fr){for(let l=Math.max(s.l,want||0);l<=9;l++)if(sl[l-1]>(c.us[l]||0)){lv=l;break}if(!lv){let a=sl.some(x=>x);if(a||s.u)return T(a?'Nessuno slot disponibile':'Già lanciato (si recupera con il riposo lungo)');s.u=1;lv=s.l}else c.us[lv]=(c.us[lv]||0)+1}if(it){it.q--;if(it.q<1)c.it.splice(c.it.indexOf(it),1)}spTm(s);sv();R();if(/attacco/i.test(s.no))satk(i);else if(parse(s.dm))sdmg(i,0,lv);else T(`<b>${s.n}</b><p>Lanciato${lv?' con slot di livello '+lv:''}</p>${/TS /.test(s.no)?`<small>CD ${spDC()}</small>`:''}`)}
 function sM(){MO(`<h3>Incantesimo personalizzato</h3><label>Nome<input id="sn"></label><label>Livello (0 = trucchetto)<input id="sl" type="number" value="0" min="0" max="9"></label><label>Tempo di lancio<input id="st" value="Azione"></label><label>Gittata<input id="sr"></label><label>Materiali (vuoto se nessuno)<input id="sc" placeholder="es. polvere di diamante da 100 mo"></label><label>Durata<input id="sd" value="Istantanea"></label><div class="r"><label><input type="checkbox" id="scn"> Concentrazione</label><label><input type="checkbox" id="sri"> Rituale</label></div><label>Danno o cura (es. 2d6 fuoco)<input id="sm"></label><label>Dettagli rituale (se rituale)<input id="srt" placeholder="es. +10 minuti, senza slot"></label><label>Effetti di stato (separati da virgola)<input id="sef" placeholder="es. Paralizzato, Prono"></label><label>Note<input id="sno"></label><button class="b" onclick="saveS()">Salva</button>`)}
 function saveS(){let o={n:$('sn').value||'Incantesimo',l:+$('sl').value||0,t:$('st').value,r:$('sr').value||'-',c:$('sc').value||'-',d:$('sd').value,cn:$('scn').checked?1:0,ri:$('sri').checked?1:0,dm:$('sm').value,no:$('sno').value,rt:$('srt').value,ef:$('sef').value};if(!okAdd(o))return;C().sp.push(o);closeM();sv();R()}
-function tZn(){let c=C(),eqc=eqCard(),at=c.it.filter(x=>x.a).length,nm=c.it.filter(x=>!x.m),mg=c.it.filter(x=>x.m),kg=a=>fmt(a.reduce((t,x)=>t+ikg(x)*(x.q||1),0));
+function tZn(){let c=C(),eqc=eqCard(),at=c.it.filter(x=>x.a).length,vc=c.it.filter(isVc),nm=c.it.filter(x=>!x.m&&!isVc(x)),mg=c.it.filter(x=>x.m),kg=a=>fmt(a.reduce((t,x)=>t+ikg(x)*(x.q||1),0));
 return`${eqc}<div class="c"><div class="hd"><b>Zaino</b><small class="mu">${nm.length} ${nm.length==1?'oggetto':'oggetti'} - ${kg(nm)} kg</small></div>${nm.map(it).join('')||'<p class="mu">Vuoto.</p>'}
 <details class="add"><summary>+ Aggiungi oggetto</summary><div class="r" style="margin-top:6px"><input id="in" placeholder="Nome" style="flex:2"><input id="iq" type="number" value="1" min="1" style="flex:1" aria-label="Quantità"><input id="ikg" type="number" step="0.1" min="0" placeholder="kg" style="flex:1"></div><input id="ids" placeholder="Descrizione (opzionale)" style="margin-top:6px"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="im" style="width:auto"> Oggetto magico</label><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="ibt" style="width:auto"> Usabile in battaglia (si consuma)</label><div class="r"><input id="ibd" placeholder="Dadi (es. 2d4+2), se servono" style="flex:2"><select id="ibk" style="flex:1"><option value="cura">Cura</option><option value="danno">Danno</option><option value="">Altro</option></select></div><button class="b" style="margin-top:8px" onclick="addI()">Aggiungi</button></details>
 <details class="add"><summary>Materiali degli incantesimi</summary><p class="mu">Lanciare un incantesimo consuma 1 unità del materiale.</p><div class="r" style="margin:6px 0"><button class="chip" onclick="addMats(0)">Aggiungi quelli dei miei incantesimi</button><button class="chip" onclick="addMats(1)">Aggiungi tutti</button></div><div class="r"><select id="ms" style="flex:1">${O(MATS)}</select><button class="b" onclick="add1(MATS[$('ms').value])||T('Troppo pesante');sv();R()">+1</button></div></details></div>
 <div class="c"><div class="hd"><b>Oggetti magici</b><small class="mu">Sintonia ${at}/3</small></div>${mg.map(it).join('')||'<p class="mu">Nessuno. Spunta "Oggetto magico" quando aggiungi un oggetto.</p>'}</div>
-${coCard()}${loadCard()}`}
+${vc.length?`<div class="c"><div class="hd"><b>Cavalcature e veicoli</b><small class="mu">non contano nel carico</small></div>${vc.map(it).join('')}</div>`:''}${coCard()}${loadCard()}`}
 function it(x){let i=C().it.indexOf(x),b=btOf(x),w=ikg(x),info=[b?'Usabile in battaglia'+(b.d?': '+b.d+(b.k?' '+b.k:''):''):'',x.m?(x.a?'Sintonizzato':'Non sintonizzato'):'',w?fmt(w)+' kg ciascuno':''].filter(Boolean).join(' - ');return`<div class="it zn"><details ontoggle="znOp(${i},this.open)" ${ZNO.has(x.n)?'open':''}><summary><b>${x.n}</b> <small class="mu">x${x.q}${w?' - '+fmt(w*x.q)+' kg':''}${x.a?' - sintonizzato':''}${b?' - battaglia':''}</small></summary>${x.d?`<p style="margin:6px 0"><small>${x.d}</small></p>`:''}${info?`<small class="mu">${info}</small>`:''}<div class="r" style="margin-top:6px"><button class="chip" onclick="iE(${i})">Modifica</button>${x.m?`<button class="chip" onclick="att(${i})">${x.a?'Togli sintonia':'Sintonizza'}</button>`:''}</div></details><span class="r znq">${LV.v&&b?`<button class="b" onclick="lvItem(${i})">Usa</button>`:''}<button class="chip" aria-label="Togli uno" onclick="qty(${i},-1)">&minus;</button><button class="chip" aria-label="Aggiungi uno" onclick="qty(${i},1)">+</button></span></div>`}
 function addI(){let n=$('in').value.trim();if(!n)return;let q=+$('iq').value||1,kg=+$('ikg').value||0;if(!fits(q*kg,n))return;let o={n,q,m:$('im').checked,a:0,d:$('ids').value.trim(),kg};if($('ibt')&&$('ibt').checked){let bd=($('ibd').value||'').trim();if(bd&&!parse(bd))return T('Dadi non validi: scrivi per esempio 2d4+2');o.bt=1;o.bd=bd;o.bk=$('ibk').value}C().it.push(o);sv();R()}
 const ZNO=new Set();
@@ -1548,7 +1559,7 @@ function srList(c){let o=rsU(c),a=[];rsOn(c).forEach(r=>{let sr=r.sr(c),u=o[r.k]
 function srHd(){let c=C();if(c.hd<1)return;let k=K(),r=rd(k[1]),g=Math.max(0,r+M(2)),b=c.hp;c.hd--;c.hp=Math.min(MH(c),c.hp+g);SRS.hd++;SRS.hp+=c.hp-b;sv();srM();T(`<b>Dado Vita</b><div class="big">+${g} PF</div><small>d${k[1]} (${r}) ${sg(M(2))}</small>`)}
 function srDo(){let c=C(),o=rsU(c),msg=srList(c);if(c.c==11&&SRS&&!o.ar){let tot=0,sl=slots();Object.keys(SRS.ar).forEach(l=>{tot+=+l*SRS.ar[l]});if(tot>Math.ceil(c.lv/2))return T('Recupero arcano: al massimo '+Math.ceil(c.lv/2)+' livelli di slot');if(tot>0){Object.keys(SRS.ar).forEach(l=>{c.us[l]=Math.max(0,(c.us[l]||0)-SRS.ar[l])});o.ar=1;msg.push('Recupero arcano: '+tot+' livelli di slot')}}
 rsOn(c).forEach(r=>{let sr=r.sr(c);if(sr=='all')o[r.k]=0;else if(sr)o[r.k]=Math.max(0,(o[r.k]||0)-1)});if(c.c==0)c.ru=Math.max(0,(c.ru||0)-1);if(K()[6]=='w')c.us={};if(isSorc(c)&&c.lv>=5&&!o.rsr&&(c.pu||0)>0){c.pu=Math.max(0,c.pu-Math.floor(c.lv/2));o.rsr=1}
-c.tm=(c.tm||[]).filter(x=>x.r>600);SRS=null;closeM();sv();R();T('<b>Riposo breve concluso</b>'+(msg.length?'<small>'+sxE(msg.join('; '))+'</small>':''))}
+c.tm=(c.tm||[]).map(x=>Object.assign(x,{r:x.r-600})).filter(x=>x.r>0);SRS=null;closeM();sv();R();T('<b>Riposo breve concluso</b>'+(msg.length?'<small>'+sxE(msg.join('; '))+'</small>':''))}
 function tmRest(c){c.tm=[];c.ira=0;c.ru=0;c.pu=0;c.iu=0;c.rs={}}
 function efSrc(flag){let c=C(),o=[],t=(n,e,tag)=>{if(e&&pe(e)[flag])o.push(n+(tag?' ('+tag+')':''))};if(!c)return'';c.ft.forEach(f=>t(f,FE[f],'talento'));(c.xt||SP[c.s][3].split('; ')).forEach(x=>{let k=x.replace(/ \(.*|\s\d+ m$/,'');t(k,FE2[k],'specie')});CL[c.c][8].split('|').forEach(g=>{let l=+g.split(' ')[0];if(l>c.lv)return;g.slice(g.indexOf(' ')+1).split('; ').forEach(f=>{if(l==1&&c.xc&&!c.xc.includes(f))return;t(f,FE[f],'classe')})});(SDF[c.sub]||[]).forEach(x=>{if(+x[0]<=c.lv)t(x[1],FE[x[1]],'sottoclasse')});if(c.b>=16)t('Background',BG[c.b][3],'background');t('Effetto personalizzato',c.ex,'');return [...new Set(o)].join(', ')}
 function srcOf(n){let c=C(),f=String(n||'').toLowerCase();if((SDF[c.sub]||[]).some(x=>String(x[1]).toLowerCase()==f))return 'sottoclasse '+(c.sub||'');if(c.ft.some(x=>x.toLowerCase()==f))return 'talento';return 'classe '+CL[c.c][0]}
@@ -1599,7 +1610,7 @@ function psCard(){let c=C(),pd=psPend(c),h='';if(!pd.length)return'';let free=SK
 function psT(n){let c=C(),el=$('pst_'+n.replace(/ /g,''));if(!el||el.value==='')return;c.ps[+el.value]=n;sv();R()}
 function psRSave(){let c=C(),k=K(),v=[...document.querySelectorAll('.psrc:checked')].map(x=>+x.value);if(v.length!=k[3])return T('Scegli esattamente '+k[3]+' abilità');v.forEach(i=>{c.ps[i]='Classe'});delete c.psr;sv();R()}
 function wProf(w,c){c=c||C();return !w||!w.m||MART.includes(c.c)||!!EF(c).marz||(c.c==8&&/Accurata|Leggera/.test(w.p||''))||(c.c==5&&/Leggera/.test(w.p||''))}
-const AMO=[[/^Arco (corto|lungo)/,/^Frecce/,'Frecce (20)'],[/^Balestra a mano/,/^Quadrelli per balestra a mano/,'Quadrelli per balestra a mano (20)'],[/^Balestra (leggera|pesante)/,/^Quadrelli(?! per balestra a mano)/,'Quadrelli per balestra (20)'],[/^Fionda/,/^Proiettili per fionda/,'Proiettili per fionda (20)'],[/^Cerbottana/,/^Aghi/,'Aghi per cerbottana (50)'],[/^(Pistola|Moschetto)/,/^Proiettili(?! per fionda)/,'Proiettili (10)']];
+const AMO=[[/^Arco (corto|lungo)/,/^Frecce/,'Frecce (20)'],[/^Balestra a mano/,/^Quadrelli per balestra a mano/,'Quadrelli per balestra a mano (20)'],[/^Balestra (leggera|pesante)/,/^Quadrelli(?! per balestra a mano)/,'Quadrelli per balestra (20)'],[/^Fionda/,/^Proiettili per fionda/,'Proiettili per fionda (20)'],[/^Cerbottana/,/^(Dardi|Aghi) per cerbottana/,'Dardi per cerbottana (50)'],[/^(Pistola|Moschetto)/,/^(Pallottole|Proiettili)(?! per fionda)/,'Pallottole per armi da fuoco (10)']];
 function amOf(w){return w&&AMO.find(x=>x[0].test(w.n))||null}
 function amN(x){let m=/\((\d+)\)\s*$/.exec(x.n||'');return m?+m[1]:1}
 function amLeft(w){let a=amOf(w);return a?C().it.filter(x=>a[1].test(x.n)).reduce((t,x)=>t+(x.q||0)*amN(x)-(x.u||0),0):null}
@@ -1608,6 +1619,12 @@ function amRec(){let c=C(),o=c.amu||{},msg=[];Object.keys(o).forEach(k=>{let n=M
 function twf(c){return((c||C()).ft||[]).includes('Combattente con Due Armi')}
 function wOffM(w,off){let m=WM(w);return off&&!twf()?Math.min(0,m):m}
 function lvSDo(i,cr){return lvSD(i,cr,1)}
+function spDur(d){let t=String(d||'').toLowerCase(),m=/(\d+)\s*(round|min|minut|or[ae]|giorn)/.exec(t);if(!m)return 0;let n=+m[1],u=m[2];return Math.min(14400,u=='round'?n:/^min/.test(u)?n*10:/^or/.test(u)?n*600:n*14400)}
+function spTm(s){let c=C(),r=spDur(s.d);if(!r)return;let k='s'+s.n,lost='';c.tm=TMS().filter(x=>{if(x.k==k)return false;if(s.cn&&x.cn){lost=x.n;return false}return true});c.tm.push({k,n:s.n,r,m:r,cn:s.cn?1:0});if(lost)setTimeout(()=>T('<b>Concentrazione persa</b><small>'+sxE(lost)+' termina: ti concentri su '+sxE(s.n)+'</small>'),60)}
+const WMIG={"Quadrelli per balestra (20)": [0.7, 0.75], "Quadrelli per balestra a mano (20)": [0.5, 0.75], "Proiettili per fionda (20)": [0.7, 0.75], "Frecce d'argento (5)": [0.3, 0.125], "Frecce da segnalazione (5)": [0.3, 0.125], "Frecce a punta larga (5)": [0.3, 0.125], "Frecce incendiarie (5)": [0.3, 0.125], "Frecce soporifere (5)": [0.3, 0.125], "Frecce con punta da caccia (10)": [0.3, 0.25], "Frecce sterminatrici (1)": [0.05, 0.025], "Quadrelli +1 (20)": [0.7, 0.75], "Lama solare": [1.5, 1.0], "Martello del nano": [2.0, 2.5], "Giaco di maglia di mithral": [10.0, 5.0], "Cotta di maglia di mithral": [10.0, 13.75], "Armatura a piastre di mithral": [12.0, 16.25], "Giaco di maglia elfico": [10.0, 5.0], "Armatura di scaglie di drago": [22.0, 22.5], "Armatura dell'invulnerabilità": [27.5, 32.5], "Armatura del vento": [5.0, 6.5], "Armatura silenziosa": [5.0, 6.5], "Armatura delle fiamme": [20.0, 22.5], "Armatura del gelo": [20.0, 22.5], "Libro di preghiere": [2.0, 2.5], "Libro di storie": [1.5, 2.5], "Libro proibito": [1.5, 2.5], "Libro del vigore": [0.5, 2.5], "Libro della sapienza": [0.5, 2.5], "Libro della volontà": [0.5, 2.5], "Agata muschiata": [0.0, 0.01], "Azzurrite": [0.0, 0.01], "Ematite": [0.0, 0.01], "Lapislazzuli": [0.0, 0.01], "Malachite": [0.0, 0.01], "Turchese": [0.0, 0.01], "Corniola": [0.0, 0.01], "Occhio di tigre": [0.0, 0.01], "Quarzo rosa": [0.0, 0.01], "Zircone": [0.0, 0.01], "Ametista": [0.0, 0.01], "Granato": [0.0, 0.01], "Giada": [0.0, 0.01], "Perla": [0.0, 0.01], "Spinello": [0.0, 0.01], "Acquamarina": [0.0, 0.01], "Perla nera": [0.0, 0.01], "Topazio": [0.0, 0.01], "Opale": [0.0, 0.01], "Zaffiro stellato": [0.0, 0.01], "Diamante": [0.0, 0.01], "Rubino": [0.0, 0.01], "Smeraldo": [0.0, 0.01], "Zaffiro": [0.0, 0.01], "Diamante da 300 MO (Rianimare)": [0.0, 0.01], "Ossidiana": [0.1, 0.01], "Ambra": [0.1, 0.01], "Corallo": [0.1, 0.01], "Giaietto": [0.1, 0.01], "Polvere di diamante (100 MO)": [0.1, 0.01], "Anello di protezione": [0.0, 0.01], "Anello di salto": [0.0, 0.01], "Anello di nuotare": [0.0, 0.01], "Anello di caduta morbida": [0.0, 0.01], "Anello dell'evasione": [0.0, 0.01], "Anello di rigenerazione": [0.0, 0.01], "Anello di schermatura mentale": [0.0, 0.01], "Anello di resistenza": [0.0, 0.01], "Anello di influenza animale": [0.0, 0.01], "Anello della luce": [0.0, 0.01], "Anello dell'arcano": [0.0, 0.01], "Anello della volontà di ferro": [0.0, 0.01], "Anello del fuoco minore": [0.0, 0.01], "Anello del respiro": [0.0, 0.01], "Anello della visione": [0.0, 0.01], "Anello della furtività": [0.0, 0.01], "Anello dell'acrobata": [0.0, 0.01], "Sigillo di famiglia": [0.0, 0.01], "Anello con sigillo d'oro": [0.0, 0.01], "Anello con zaffiro": [0.0, 0.01], "Orecchino della vigilanza": [0.0, 0.01], "Amuleto della salute": [0.5, 0.1], "Amuleto protettivo dai veleni": [0.0, 0.1], "Amuleto delle ferite chiuse": [0.0, 0.1], "Medaglione dei pensieri": [0.0, 0.1], "Amuleto del devoto +1": [0.0, 0.1], "Amuleto del devoto +2": [0.0, 0.1], "Amuleto del devoto +3": [0.0, 0.1], "Amuleto del vigore": [0.0, 0.1], "Collana dell'adattamento": [0.0, 0.1], "Collana delle perle di preghiera": [0.0, 0.1], "Ciondolo della memoria": [0.0, 0.1], "Stella protettrice": [0.0, 0.05], "Occhio del cacciatore": [0.0, 0.05], "Spilla di rubino": [0.0, 0.02], "Pietra della buona fortuna": [0.0, 0.01], "Pietra di Ioun (protezione)": [0.0, 0.01], "Pietra di Ioun (agilità)": [0.0, 0.01], "Scarabeo della protezione": [0.0, 0.01], "Mantello della protezione": [0.5, 1.0], "Mantello elfico": [0.5, 1.0], "Mantello della dispersione": [0.5, 1.0], "Mantello del pipistrello": [0.5, 1.0], "Mantello dell'arrampicata": [0.5, 1.0], "Mantello dell'invisibilità": [0.5, 1.0], "Stivali elfici": [0.5, 1.0], "Stivali della velocità": [0.5, 1.0], "Stivali della levitazione": [0.5, 1.0], "Stivali del camminatore e del saltatore": [0.5, 1.0], "Stivali della terra d'inverno": [0.5, 1.0], "Borsa conservante": [0.5, 2.5], "Specchio della prigionia": [2.0, 25.0], "Tappeto volante piccolo": [2.0, 4.0], "Corda di canapa (15 m)": [5.0, 2.5], "Chiodi da arrampicata (10)": [2.5, 1.25], "Boccetta di vetro": [0.25, 0.0], "Bottiglia di vino": [0.7, 1.75], "Paiolo di ferro": [2.5, 5.0], "Pacchetto del cacciatore": [8.0, 26.5], "Pacchetto del ladro esperto": [7.0, 9.75], "Acqua sacra del fiume (fiasca)": [1.0, 0.5], "Marionetta": [0.0, 0.2], "Strumenti da calderaio": [4.0, 5.0], "Sella da torneo": [10.0, 15.0], "Cocchio da guerra": [150.0, 50.0]};
+function wMig(){if((S.wv||0)>=15)return;let f=x=>{let m=x&&WMIG[x.n];if(m&&Math.abs((+x.kg||0)-m[0])<1e-9)x.kg=m[1]};((S.dm&&S.dm.sh)||[]).forEach(f);S.chs.forEach(c=>(c.it||[]).forEach(f));S.wv=15}
+const CAVN=new Set([...SHD,...SHD2].filter(x=>x.c=='Cavalcature').map(x=>x.n));
+function isVc(x){return !!x&&(x.vc==1||CAVN.has(x.n))}
 function spDel(i){let s=C().sp[i];if(!s||typeof confirm=='function'&&!confirm('Eliminare '+s.n+'?'))return;C().sp.splice(i,1);closeM();sv();R()}
 function spES(i){let s=C().sp[i];if(!s)return;let dm=($('e_m').value||'').trim();if(dm&&dm!=(s.dm||'')&&!parse(dm))return T('Danno o cura non valido: scrivi per esempio 2d6 fuoco');Object.assign(s,{n:($('e_n').value||'').trim()||s.n,l:Math.max(0,Math.min(9,+$('e_l').value||0)),t:$('e_t').value,r:$('e_r').value||'-',c:$('e_c').value||'-',d:$('e_d').value,cn:$('e_cn').checked?1:0,ri:$('e_ri').checked?1:0,dm,no:$('e_no').value,rt:$('e_rt').value,ef:$('e_ef').value});closeM();sv();R()}
 function tmTickC(c,n){if(!c)return;tmMig(c);n=n||1;let t=c.tm||[],msg=[];for(let i=0;i<n;i++)t.forEach(x=>{if(x.done)return;if(x.k=='ira'){let per=c.lv>=15&&c.c==0;if(!per&&!x.ex){x.done=1;msg.push('Ira terminata: non è stata prolungata');return}x.ex=0}x.r--;if(x.r<=0){x.done=1;msg.push(x.n+' terminata')}});if(t.some(x=>x.done&&x.k=='ira'))c.ira=0;c.tm=t.filter(x=>!x.done);sv();R();if(msg.length)T('<b>'+msg.join('<br>')+'</b>')}
@@ -1629,8 +1646,8 @@ function mmM(){let c=C();if(!isSorc(c))return;let n=mmN(c.lv);if(!n)return T('Le
 function mmS(){let c=C(),n=mmN(c.lv),v=[...document.querySelectorAll('.mmc')].filter(x=>x.checked).map(x=>MMG[+x.value][0]);if(v.length>n)return T('Puoi conoscere al massimo '+n+' Metamagie');c.mm=v;closeM();sv();R()}
 function lvNote(L){let c=C(),h='',rg=L<9?2:L<16?3:4;if(c.c==0)h+=`<p class="mu">Ira: ${ragU(L)} usi, danni +${rg}${L==15?' - Ira persistente: dura 10 minuti senza doverla prolungare':''}</p>`;if(isSorc(c)){h+=`<p class="mu">Punti Stregoneria: ${spMax(L)}. Metamagie conosciute: ${mmN(L)}${mmN(L)>mmN(L-1)?' - dopo la conferma scegli le nuove':''}</p>`}return h}
 function rageCard(){let c=C(),mx=ragU(c.lv),u=Math.min(mx,c.ru||0),t=TMS().find(x=>x.k=='ira'),per=c.lv>=15,rg=c.lv<9?2:c.lv<16?3:4;return `<div class="c"><div class="r" style="justify-content:space-between"><b>Ira</b><span>Usi <b>${mx-u}</b>/${mx} - danni +${rg}</span></div>`+(c.ira?`<div class="tm"><b>Ira attiva</b>`+(t?`<div>${tmFmt(t.r)} rimasti (massimo 10 minuti)</div><div class="bar"><i style="width:${Math.max(0,Math.round(100*t.r/t.m))}%"></i></div>`+(per?`<small class="mu">Ira persistente: dura tutti i 10 minuti senza prolungarla.</small>`:`<div>${t.ex?'Prolungata: continua al prossimo round':"<b>Da prolungare</b> entro fine turno: attacca un nemico, imponi un TS o usa l'azione bonus"}</div>`):'<small class="mu">Attiva senza timer</small>')+`<div class="r" style="margin-top:6px">${t&&!per?`<button class="b" onclick="lvTmExt()">Prolunga (azione bonus)</button>`:''}<button class="b o" onclick="lvTmEnd('ira')">Termina Ira</button></div></div>`:`<div class="r" style="margin-top:6px"><button class="b" onclick="lvTmRage()" ${u>=mx?'disabled':''}>Entra in Ira</button><small class="mu">${u>=mx?'Usi finiti: si recuperano con il riposo lungo':'Consuma un uso. Durata massima 10 minuti.'}</small></div>`)+`<small class="mu">Con l'Ira attiva il bonus ai danni si aggiunge da solo ai colpi in mischia.</small></div>`}
-function tmCard(){let c=C(),t=TMS().filter(x=>x.k!='ira'),live=!!LV.v;return `<div class="c"><div class="r" style="justify-content:space-between"><b>Durate</b><span class="r"><button class="chip" onclick="lvTmAddM()">+ Timer</button>${!live&&(t.length||c.ira)?`<button class="chip" onclick="tmTick(1)">Round successivo</button>`:''}</span></div>${t.length?t.map(x=>`<div style="margin-top:8px"><div class="r" style="justify-content:space-between"><span><b>${sxE(x.n)}</b> - ${tmFmt(x.r)}</span><button class="chip" onclick="lvTmEnd('${jsA(x.k)}')">Termina</button></div><div class="bar"><i style="width:${Math.max(0,Math.round(100*x.r/x.m))}%"></i></div></div>`).join(''):'<small class="mu">Nessuna durata attiva. Il conto scende di un round a ogni round del combattimento live.</small>'}</div>`}
+function tmCard(){let c=C(),t=TMS().filter(x=>x.k!='ira'),live=!!LV.v;return `<div class="c"><div class="r" style="justify-content:space-between"><b>Durate</b><span class="r"><button class="chip" onclick="lvTmAddM()">+ Timer</button>${!live&&(t.length||c.ira)?`<button class="chip" onclick="tmTick(1)">+1 round</button><button class="chip" onclick="tmTick(10)">+1 min</button><button class="chip" onclick="tmTick(100)">+10 min</button><button class="chip" onclick="tmTick(600)">+1 h</button>`:''}</span></div>${t.length?t.map(x=>`<div style="margin-top:8px"><div class="r" style="justify-content:space-between"><span><b>${sxE(x.n)}</b>${x.cn?' <span class="tg">C</span>':''} - ${tmFmt(x.r)}</span><button class="chip" onclick="lvTmEnd('${jsA(x.k)}')">Termina</button></div><div class="bar"><i style="width:${Math.max(0,Math.round(100*x.r/x.m))}%"></i></div></div>`).join(''):'<small class="mu">Nessuna durata attiva. Lanciando un incantesimo con una durata il timer parte da solo (C = concentrazione: ne puoi mantenere una sola). Nel live scende a ogni round; fuori usa i tasti per far passare il tempo.</small>'}</div>`}
 function sorcCard(){let c=C();if(!isSorc(c))return'';let mx=spMax(c.lv),left=spLeft(),n=mmN(c.lv),mm=c.mm||[],sl=slots(),iu=c.iu||0,mi=TMS().some(x=>x.k=='mi');let h=`<div class="c"><div class="r" style="justify-content:space-between"><b>Punti Stregoneria</b> <small>(tocca per usare o recuperare)</small></div>`;if(!mx)h+='<small class="mu">I Punti Stregoneria arrivano al livello 2 con Fonte di magia.</small>';else{h+=`<div class="r" style="margin-top:6px"><span style="width:60px">${left}/${mx}</span>${Array.from({length:mx},(_,j)=>`<button class="pip ${j<left?'f':''}" onclick="spAdj(${j<left?-1:1})"></button>`).join('')}</div>`}h+=`<div class="r" style="margin-top:8px"><button class="b" onclick="lvTmInnate()" ${mi?'disabled':''}>Magia innata</button><small class="mu">Usi ${Math.max(0,2-iu)}/2${c.lv>=7?' (a 0 puoi spendere 2 PS)':''}. 1 minuto: CD +1 e vantaggio ai tiri per colpire con incantesimi da Stregone.</small></div>`;if(mx){h+=`<div class="r" style="margin-top:8px"><select id="fm_l" style="flex:1">${sl.map((q,i)=>q?`<option value="${i+1}">Slot livello ${i+1}</option>`:'').join('')}</select><button class="chip" onclick="spSlotToPs()">Slot → PS</button><button class="chip" onclick="spPsToSlot()">PS → slot</button></div><small class="mu">Fonte di magia: PS → slot recupera uno slot speso (costo 2, 3, 5, 6, 7 per i livelli 1-5).</small>`}h+=`<div class="r" style="justify-content:space-between;margin-top:10px"><b>Metamagia</b><span><small>${mm.length}/${n} conosciute</small> <button class="chip" onclick="mmM()">Scegli</button></span></div>`;if(!n)h+='<small class="mu">La Metamagia arriva al livello 2.</small>';else if(!mm.length)h+='<small class="mu">Scegli le tue Metamagie con il tasto Scegli.</small>';h+=MMG.map((m,i)=>mm.includes(m[0])?`<div style="margin-top:8px"><div class="r" style="justify-content:space-between"><b>${m[0]}</b><button class="b" onclick="lvMm(${i})" ${left<m[1]?'disabled':''}>Usa (${m[1]} PS)</button></div><small class="mu">${m[2]}</small></div>`:'').join('');h+=`<details style="margin-top:8px"><summary>Tutte le opzioni di Metamagia</summary>${MMG.map(m=>`<p><b>${m[0]}</b> (${m[1]} PS)${mm.includes(m[0])?' - conosciuta':''}<br><small class="mu">${m[2]}</small></p>`).join('')}</details></div>`;return h}
 (function(){['atk','satk'].forEach(n=>{let f=window[n];if(typeof f!='function')return;window[n]=function(){try{tmExtAuto()}catch(e){}return f.apply(this,arguments)}})})();
 /* ----- avvio: resta in fondo, dopo tutte le definizioni ----- */
-try{S.chs=(Array.isArray(S.chs)?S.chs:[]).filter(c=>c&&typeof c=='object'&&!Array.isArray(c));S.chs.forEach(c=>{try{sxNorm(c)}catch(e){}});if(S.ch&&!S.chs.includes(S.ch))S.ch=null}catch(e){}try{loadCu()}catch(e){}try{spMig();sv()}catch(e){}R();try{lvBoot()}catch(e){}
+try{S.chs=(Array.isArray(S.chs)?S.chs:[]).filter(c=>c&&typeof c=='object'&&!Array.isArray(c));S.chs.forEach(c=>{try{sxNorm(c)}catch(e){}});if(S.ch&&!S.chs.includes(S.ch))S.ch=null}catch(e){}try{loadCu()}catch(e){}try{spMig();wMig();sv()}catch(e){}R();try{lvBoot()}catch(e){}
