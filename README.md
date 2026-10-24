@@ -2,6 +2,22 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v16
+
+- **Icona nuova**: d20 d'oro sfaccettato dentro un cerchio runico, su viola notte con scintille (sorgente in icons/icon.svg). Sul telefono l'icona già installata si aggiorna quando il sistema rilegge il manifest; su iPhone serve togliere e rimettere l'app nella Home.
+- **Animazioni**: pulsanti che si schiacciano e lasciano un'onda al tocco, schermate che entrano con una leggera dissolvenza a cascata, finestre che salgono dal basso, messaggi dei dadi che compaiono con un piccolo rimbalzo, PF che pulsano quando cambiano, icona della sezione che salta, sezioni a scomparsa che si aprono morbide, emblema e tasto Giocatore animati nella schermata iniziale. Si spengono da Personalizza o con "riduci movimento" del telefono.
+- **Aspetto nei salvataggi**: in Salva e importa c'è "Solo l'aspetto" (tema, colori e immagini in un file a parte) e, salvando giocatori o mostri, la casella "Includi l'aspetto". Importando un file che lo contiene puoi scegliere se applicarlo. Il tema importato viene controllato: valori sconosciuti scartati, solo immagini png/jpeg/webp/gif.
+- **Schermata iniziale nuova**: titolo centrato "Tomo dell'Avventuriero" con emblema a d20, Salva e importa e Personalizza in alto, ruoli Giocatore e Master come due schede affiancate con descrizione, combattimento live sotto.
+- **Barra delle sezioni** con un'icona per ogni sezione (Scheda, Abilità, Armi, Magie, Zaino; Forgia, Scontro, Eventi, Negozio) e la sezione attiva evidenziata da una pillola colorata.
+- **Personalizza l'aspetto** (tasto 🎨 nella schermata iniziale e in alto nella scheda e nel Master): 9 temi (Automatico, Chiaro, Scuro, Pergamena, Notte arcana, Foresta, Brace di drago, Abissi, Inchiostro), i 7 colori modificabili uno per uno (sfondo, riquadri, testo, testo secondario, pulsanti, PF, contorni), spessore dei contorni, angoli e carattere dei titoli.
+- **Immagini personalizzate** per sfondo dell'app, riquadri, pulsanti, finestre a comparsa e barra in basso, ciascuna con un "velo" regolabile che la tiene leggibile. Le immagini vengono rimpicciolite e salvate in IndexedDB, separate dai personaggi: non riempiono lo spazio dei salvataggi. Non sono incluse in "Salva e importa".
+- **Pulsanti che non vanno più a capo**: restano su una riga e il testo accanto si stringe; vanno su due righe solo quando da soli non ci starebbero (prima: "+ Tabella" negli Eventi, intestazioni dei riquadri).
+- **Descrizioni lunghe accorciate** a 3 righe con "Mostra tutto" (si può disattivare dal pannello); lo stato aperto resta anche quando la schermata si ridisegna.
+- **Ordine dei turni** più leggibile: nome su una riga, PF e CA sotto quando non c'è spazio. Tiri salvezza in una griglia 3×2.
+- **Testo leggibile sui pulsanti** anche col tema scuro (prima era bianco su verde chiaro).
+- La scritta della versione non copre più la barra in basso: si vede nella schermata iniziale e nel pannello Aspetto.
+- **Corretto**: `style.css` non veniva caricato, quindi i pulsanti "Ritira il dado", i riquadri dei timer e le barre non avevano stile. Ora tutto lo stile sta in `style.css`.
+
 ## Novità v15
 
 - **Timer**: lanciando un incantesimo con una durata parte il suo timer (C = concentrazione: un nuovo incantesimo a concentrazione chiude il precedente). Fuori dallo scontro ci sono +1 round, +1 min, +10 min e +1 h. Il riposo breve fa passare un'ora a tutti i timer (prima cancellava solo quelli brevi). Verificati Ira, Ira persistente, Magia innata, timer nel live e durate degli effetti lato Master.
