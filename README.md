@@ -2,6 +2,26 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v17
+
+- **Combattimento live, protocollo 2** (tutti i telefoni devono avere questa versione: le versioni vecchie non si vedono più con quelle nuove):
+  - ogni giocatore crea, entrando in una stanza, chiavi sue: una per firmare e una per cifrare. Il Master lega ogni giocatore alla sua chiave al primo messaggio, quindi nessuno può più mandare tiri, schede o profili a nome di un altro;
+  - profilo, tiri, scheda, accettazione e ricompense sono cifrati con una chiave che conoscono solo quel giocatore e il Master (ECDH P-256 + HKDF + AES-GCM): gli altri giocatori della stanza non li leggono. Lo stato dello scontro resta visibile a tutta la stanza, firmato dal Master;
+  - ogni messaggio ha un contatore che può solo crescere: un messaggio ricopiato e rimandato (replay) viene ignorato; il Master accetta solo messaggi firmati, i giocatori solo stati firmati dal Master;
+  - i broker non vedono più stanza e identificativi: i topic sono codici derivati con un hash dal link;
+  - quattro broker pubblici, tre collegati insieme: se uno cade gli altri continuano.
+- **Sicurezza** (verificata con attacchi di prova):
+  - aprendo un link live l'app conserva l'impronta del Master contenuta nel link (prima la perdeva, e un giocatore della stanza poteva spacciarsi per il Master) e chiede conferma prima di entrare in una stanza nuova;
+  - entrando in una stanza nuova la scheda non parte più da sola: va scelta di nuovo;
+  - i pacchetti troppo grandi dal broker vengono saltati senza riempire la memoria, e i messaggi oltre la dimensione prevista per il loro tipo non vengono nemmeno decifrati;
+  - Content Security Policy: la pagina può caricare solo i propri file e collegarsi solo ai broker del live, quindi niente script, immagini o invii di dati verso altri server;
+  - i testi salvati nel telefono vengono ripuliti come quelli importati (niente HTML nei nomi).
+- **Descrizioni nuove per tutti i 335 incantesimi** (incantesimi.js): cosa fanno, che tiro serve e cosa succede se riesce, più come crescono (slot superiore o livelli 5, 11, 17 per i trucchetti). Nella lista si leggono aprendo l'incantesimo.
+- **Anteprima in Aggiungi incantesimo**: scegliendo dalla lista vedi subito livello, lancio, gittata, durata, componenti, effetto, descrizione, crescita, classi che lo hanno e se è già nella tua lista.
+- **Manuale dell'avventuriero** (in fondo allo Zaino, manuale.js): 20 capitoli brevi in una finestra a libro, con indice, ricerca, schede dei capitoli, Indietro/Avanti e scorrimento col dito. Spiega caratteristiche, competenza, abilità, TS, vantaggio, CA, iniziativa, PF e Dadi Vita, attacchi, incantesimi, slot, Punti Stregoneria, concentrazione, riposi, condizioni, carico e monete, livelli, combattimento e live, salvataggi; dove serve mostra i numeri del tuo personaggio.
+- **Lista dei personaggi rifatta**: una scheda per eroe con avatar colorato (iniziali e livello), classe e specie, barra dei PF; si tocca la scheda (o la freccia) per giocare; Modifica, Duplica ed Elimina in una barra sola sotto. In fondo "Nuovo personaggio" e "Contenuti personalizzati"; Esci e Personalizza in alto.
+- **Righe di pulsanti a colonne uguali**: se quattro pulsanti non stanno in fila diventano 2x2, mai tre più uno da solo a capo (es. Attacco, Danno, Secondaria, Modifica nelle Armi). Provato anche con caratteri grandi.
+- **Avviso di aggiornamento nuovo**: riquadro coi colori del tema, icona animata, "Più tardi" e "Aggiorna ora".
 ## Novità v16
 
 - **Icona nuova**: d20 d'oro sfaccettato dentro un cerchio runico, su viola notte con scintille (sorgente in icons/icon.svg). Sul telefono l'icona già installata si aggiorna quando il sistema rilegge il manifest; su iPhone serve togliere e rimettere l'app nella Home.

@@ -100,7 +100,7 @@ var OPEN={},MIN=180;
 function key(t){return t.length+':'+t.slice(0,60)}
 function clampOne(e){
  if(e.dataset.clp||!e.offsetParent)return;
- if(e.closest('.t,#tt,summary,button,label,.clp,#thx,.tbl,.hd'))return;
+ if(e.closest('.t,#tt,summary,button,label,.clp,#thx,.tbl,.hd,.spv,.bk')||e.classList.contains('spd')||e.classList.contains('sps'))return;
  if(e.querySelector('button,input,select,textarea,details,p,div,.c,ul,ol,table'))return;
  var t=(e.textContent||'').trim();if(t.length<MIN)return;
  var pa=e.parentElement,cs=pa&&getComputedStyle(pa);if(cs&&/flex|grid/.test(cs.display)&&!/column/.test(cs.flexDirection))return;
@@ -111,7 +111,14 @@ function clampOne(e){
  b.onclick=function(ev){ev.stopPropagation();ev.preventDefault();var o=!e.classList.contains('op');if(o)OPEN[k]=1;else delete OPEN[k];set(o)};
  e.insertAdjacentElement('afterend',b);
 }
+/* righe fatte solo di pulsanti: colonne uguali; se un'etichetta non ci sta si dimezzano (4 -> 2x2 -> 1), mai 3+1 */
+function btnRows(root){(root||document).querySelectorAll('#app .r,#mo .r').forEach(function(r){if(!r.offsetParent||r.classList.contains('g3'))return;var k=r.children;if(k.length<2||r.dataset.bto==k.length)return;
+ for(var i=0;i<k.length;i++){var e=k[i];if(!(e.tagName=='BUTTON'||e.classList.contains('b')||e.classList.contains('chip'))||e.tagName=='SPAN'&&!e.onclick&&!e.getAttribute('onclick'))return}
+ if(k.length>6)return;r.dataset.bto=k.length;r.classList.add('bto');var n=k.length;
+ var fits=function(){for(var j=0;j<k.length;j++)if(k[j].scrollWidth>k[j].clientWidth+1)return false;return true};
+ while(true){r.style.setProperty('--n',n);r.classList.toggle('odd',n>1&&k.length%n!=0&&n==2);if(n==1||fits())break;n=n>3?Math.ceil(n/2):n-1}})}
 function clampAll(root){
+ btnRows(root);
  /* un pulsante che anche da solo sulla riga non ci sta: meglio due righe che il testo tagliato */
  (root||document).querySelectorAll('#app .b:not(.wr),#app .chip:not(.wr),#mo .b:not(.wr),#mo .chip:not(.wr)').forEach(function(b){if(b.offsetParent&&b.scrollWidth>b.clientWidth+1)b.classList.add('wr')});
  if(!st.cl){document.querySelectorAll('.clp').forEach(function(e){e.classList.remove('clp','op');delete e.dataset.clp;var n=e.nextElementSibling;if(n&&n.className=='more')n.remove()});return}

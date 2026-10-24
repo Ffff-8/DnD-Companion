@@ -1,4 +1,6 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Scheda D&amp;D</title>
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' data: wss://broker.hivemq.com:8884 wss://broker.emqx.io:8084 wss://test.mosquitto.org:8081 wss://broker-cn.emqx.io:8084; worker-src 'self'; manifest-src 'self'; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Scheda D&amp;D</title>
 <meta name="description" content="Scheda personaggio D&D offline - PWA installabile">
 <meta name="theme-color" content="#2a6f69">
 <link rel="manifest" href="manifest.json">
@@ -8,20 +10,22 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Scheda D&D">
-<link rel="stylesheet" href="style.css?v=16">
-<script src="theme.js?v=16"></script></head><body><div id="app"></div><div id="tt"></div><div id="mo"></div>
+<link rel="stylesheet" href="style.css?v=17">
+<script src="theme.js?v=17"></script></head><body><div id="app"></div><div id="tt"></div><div id="mo"></div>
 
-<script>window.APP_VER='16';</script>
-<script src="app.js?v=16" defer></script>
+<script>window.APP_VER='17';</script>
+<script src="incantesimi.js?v=17" defer></script>
+<script src="manuale.js?v=17" defer></script>
+<script src="app.js?v=17" defer></script>
 <script>
 (function(){
 var v=window.APP_VER||'';
 function chip(){try{var d=document.createElement('div');d.id='appver';d.textContent='Scheda D&D v'+v;d.style.cssText='position:fixed;right:10px;bottom:6px;font:11px system-ui,sans-serif;color:var(--mu,#667085);opacity:.75;pointer-events:none;z-index:9';document.body.appendChild(d)}catch(e){}}
 if(document.readyState=='loading')addEventListener('DOMContentLoaded',chip);else chip();
-var bn=document.createElement('div');bn.style.cssText='display:none;position:fixed;left:10px;right:10px;bottom:56px;z-index:99;background:var(--ac,#2a6f69);color:var(--on-ac,#fff);padding:10px 12px;border-radius:10px;font:14px system-ui,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.3)';var bt=document.createElement('span');bt.textContent='Aggiornamento disponibile';bn.appendChild(bt);var b=document.createElement('button');b.textContent='Aggiorna ora';b.style.cssText='margin-left:10px;background:var(--on-ac,#fff);color:var(--ac,#2a6f69);border:0;border-radius:8px;padding:6px 12px;font-weight:600;cursor:pointer';bn.appendChild(b);document.body.appendChild(bn);
+var bn=document.createElement('div');bn.className='upd';bn.setAttribute('role','status');bn.innerHTML='<div class="upi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3l1.8 5.2L18 10l-5.2 1.8L11 17l-1.8-5.2L4 10l5.2-1.8z"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></div><div class="upt"><b>Nuova versione pronta</b><small>Novit\u00e0 e correzioni: si aggiorna in un attimo, i personaggi restano dove sono.</small></div><div class="upa"><button type="button" class="upl">Pi\u00f9 tardi</button><button type="button" class="upb">Aggiorna ora</button></div>';var bt=bn.querySelector('.upt b'),b=bn.querySelector('.upb'),later=bn.querySelector('.upl');(document.body||document.documentElement).appendChild(bn);
 var nw=null,refreshing=false,hadCtrl=false;
-function show(w){nw=w;bn.style.display='block'}
-b.onclick=function(){if(nw)try{nw.postMessage('SKIP_WAITING')}catch(e){}bn.style.display='none'};
+function show(w){nw=w;bn.classList.add('on')}
+b.onclick=function(){if(nw)try{nw.postMessage('SKIP_WAITING')}catch(e){}bn.classList.add('go');bt.textContent='Aggiornamento in corso\u2026';b.disabled=later.disabled=true};later.onclick=function(){bn.classList.remove('on')};
 if('serviceWorker' in navigator){
  try{
   hadCtrl=!!navigator.serviceWorker.controller;
