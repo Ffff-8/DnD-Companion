@@ -2,6 +2,11 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v18
+
+- **Schermata iniziale senza scorrimento**: l'altezza tiene conto dei margini della barra di stato e della barra dei gesti (prima si sommavano e la pagina scorreva come una tendina) e gli spazi si stringono sugli schermi bassi; niente più rimbalzo quando non c'è niente da scorrere. Le pagine senza barra delle sezioni non lasciano più spazio vuoto in fondo.
+- **Pallini tondi**: esaurimento, slot e risorse non vengono più allungati in ellissi dalla griglia dei pulsanti.
+
 ## Novità v17
 
 - **Combattimento live, protocollo 2** (tutti i telefoni devono avere questa versione: le versioni vecchie non si vedono più con quelle nuove):

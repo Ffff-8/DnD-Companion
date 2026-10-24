@@ -1,4 +1,4 @@
-const CACHE_VERSION='6';
+const CACHE_VERSION='7';
 const CACHE='scheda-dd-'+CACHE_VERSION;
 const ASSETS=['./','index.html','app.js','style.css','theme.js','incantesimi.js','manuale.js','manifest.json','icons/icon-192.png','icons/icon-512.png','icons/icon-180.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});

@@ -112,7 +112,7 @@ function clampOne(e){
  e.insertAdjacentElement('afterend',b);
 }
 /* righe fatte solo di pulsanti: colonne uguali; se un'etichetta non ci sta si dimezzano (4 -> 2x2 -> 1), mai 3+1 */
-function btnRows(root){(root||document).querySelectorAll('#app .r,#mo .r').forEach(function(r){if(!r.offsetParent||r.classList.contains('g3'))return;var k=r.children;if(k.length<2||r.dataset.bto==k.length)return;
+function btnRows(root){(root||document).querySelectorAll('#app .r,#mo .r').forEach(function(r){if(!r.offsetParent||r.classList.contains('g3')||r.querySelector(':scope>.pip')||r.closest('.znq,.its'))return;var k=r.children;if(k.length<2||r.dataset.bto==k.length)return;
  for(var i=0;i<k.length;i++){var e=k[i];if(!(e.tagName=='BUTTON'||e.classList.contains('b')||e.classList.contains('chip'))||e.tagName=='SPAN'&&!e.onclick&&!e.getAttribute('onclick'))return}
  if(k.length>6)return;r.dataset.bto=k.length;r.classList.add('bto');var n=k.length;
  var fits=function(){for(var j=0;j<k.length;j++)if(k[j].scrollWidth>k[j].clientWidth+1)return false;return true};
