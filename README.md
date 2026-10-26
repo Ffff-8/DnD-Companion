@@ -2,6 +2,21 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v19
+
+- **Combattimento live, protocollo 3** (tutti i telefoni devono avere la v19: con le versioni vecchie non si vedono):
+  - **reazioni scelte dal giocatore**: quando un mostro agisce su di te, sul telefono compaiono l'attacco (tiro, CA, danni, tipo) e le reazioni valide in quel momento, con il motivo per quelle che non puoi usare; scegli entro 30 s e la scelta compare già applicata nel pannello del Master, che conferma o corregge. Lo stesso per gli alleati che hanno una reazione da usare per te (Intercettazione, Protezione, Controincantesimo...). Se chiudi la finestra per sbaglio la riapri dalla barra del live;
+  - **difese e contrattacchi ricavati dalla scheda** (regole 2024): Scudo (vale fino al tuo turno), Controincantesimo (con il TS su COS di chi lancia), Schivata prodigiosa, Elusione, Deviare attacchi (e il rinvio dell'attacco), Duellante Difensivo, Parata e Riposta (manovre dichiarate dal giocatore e approvate dal Master), Parole taglienti, Bagliore protettivo, Difesa superiore del cacciatore, Rimprovero Infernale (con lo slot a scelta), Ritorsione; per gli alleati Protezione, Intercettazione, Sentinella; dopo un TS fallito Indomito, Sopravvissuto disciplinato, Fortuna dell'Oscuro, Fortunato. Ira (resistenza a contundente, perforante, tagliente, comunicata dal telefono), Ira implacabile e Resistenza implacabile dell'orco si applicano da sole;
+  - corretti: Deviare attacchi valeva solo a distanza, Schivata prodigiosa dimezzava anche i TS, Scudo contro un TS consumava slot e reazione senza effetto, Scudo si poteva lanciare su un alleato;
+  - slot, risorse di classe e incantesimi gratuiti spesi in combattimento arrivano subito sulla scheda del giocatore (e di nuovo a fine scontro).
+- **Collegamento più leggero e più chiaro**:
+  - messaggi compressi prima della cifratura (una scheda grande passa da circa 21 kB a 3 kB);
+  - ogni 30 s parte solo un battito di 250 byte; lo stato completo solo quando cambia;
+  - quando un broker cade e torna, si rimanda solo quello che serviva, solo su quel broker; i collegamenti restano su broker diversi;
+  - la scheda si rimanda da sola solo se il Master non ce l'ha (per esempio dopo che ha ricaricato la pagina);
+  - MQTT 5 (con ripiego automatico sul 3.1.1): nel pannello live compare il motivo dell'ultimo problema (messaggio troppo grande, troppi messaggi al secondo, broker che non risponde...) e i messaggi oltre il limite di un broker non vengono mandati a quel broker.
+- **Sicurezza** (verificata con attacchi di prova): risposte di reazione false, rubate, ripetute, fuori tempo o con scelte non offerte vengono ignorate; richieste false verso i giocatori respinte; "bombe" di compressione fermate al limite di ogni tipo di messaggio; al massimo 30 messaggi ogni 10 s per mittente; battiti ripetuti o falsi ignorati.
+
 ## Novità v18
 
 - **Schermata iniziale senza scorrimento**: l'altezza tiene conto dei margini della barra di stato e della barra dei gesti (prima si sommavano e la pagina scorreva come una tendina) e gli spazi si stringono sugli schermi bassi; niente più rimbalzo quando non c'è niente da scorrere. Le pagine senza barra delle sezioni non lasciano più spazio vuoto in fondo.
