@@ -2,6 +2,11 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v20
+
+- **Corretto: con alcuni telefoni il live non partiva.** Sui browser che non sanno decomprimere da soli (iPhone con iOS prima del 16.4, Chrome prima del 103) la v19 non riusciva a leggere i messaggi compressi: il giocatore risultava collegato ma non riceveva la chiave del Master, quindi la scheda non partiva e non arrivava nessun tiro. Ora l'app ha un decompressore suo che si usa quando manca quello del browser (stesso limite di dimensione), e controlla davvero il formato supportato. Provato con giocatore, Master ed entrambi su browser senza compressione, anche sui broker pubblici.
+- **Avviso se un telefono è ancora sulla v18**: il Master vede "un giocatore usa ancora la v18", il giocatore vede "il Master usa ancora la v18"; sul telefono vecchio compare "AGGIORNA L'APP ALLA v19" (vale anche per la v20). Le v19 e v20 si vedono tra loro, ma conviene aggiornare tutti alla v20.
+
 ## Novità v19
 
 - **Combattimento live, protocollo 3** (tutti i telefoni devono avere la v19: con le versioni vecchie non si vedono):
