@@ -2,6 +2,17 @@
 
 Scheda personaggio per D&D, installabile come app sul telefono via web.
 
+## Novità v21
+
+- **Aggiornamenti come nel Taccuino.** Prima l'app si aggiornava da sola e a sorpresa, e con la cache di GitHub Pages (10 minuti) poteva restare bloccata sulla versione vecchia anche dopo "Aggiorna ora". Ora:
+  - l'app parte sempre dalla versione installata (anche senza rete) e i file nuovi si scaricano scavalcando la cache del browser;
+  - quando c'è una versione nuova compare l'avviso "È pronta la versione…" con le novità; si aggiorna solo quando tocchi **Aggiorna ora**, mai a sorpresa (per esempio durante il live);
+  - **Più tardi** nasconde l'avviso per 24 ore; quando chiudi del tutto l'app e la riapri si aggiorna da sola;
+  - una versione scaricata mentre l'app era chiusa viene proposta appena la riapri; se avevi già detto "Aggiorna ora" si completa da sola;
+  - se aggiorni in una finestra, le altre finestre aperte propongono **Ricarica**;
+  - in **Salva e importa**: versione installata, **Cerca aggiornamenti** e **Forza aggiornamento** (solo se l'app sembra bloccata: svuota la copia dell'app nel telefono, i personaggi restano).
+- Il passaggio dalla v20: compare ancora il vecchio avviso "Nuova versione pronta"; tocca "Aggiorna ora" e da lì in poi vale il sistema nuovo.
+
 ## Novità v20
 
 - **Corretto: con alcuni telefoni il live non partiva.** Sui browser che non sanno decomprimere da soli (iPhone con iOS prima del 16.4, Chrome prima del 103) la v19 non riusciva a leggere i messaggi compressi: il giocatore risultava collegato ma non riceveva la chiave del Master, quindi la scheda non partiva e non arrivava nessun tiro. Ora l'app ha un decompressore suo che si usa quando manca quello del browser (stesso limite di dimensione), e controlla davvero il formato supportato. Provato con giocatore, Master ed entrambi su browser senza compressione, anche sui broker pubblici.

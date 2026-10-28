@@ -10,33 +10,49 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Scheda D&D">
-<link rel="stylesheet" href="style.css?v=20">
-<script src="theme.js?v=20"></script></head><body><div id="app"></div><div id="tt"></div><div id="mo"></div>
+<link rel="stylesheet" href="style.css?v=21">
+<script src="theme.js?v=21"></script></head><body><div id="app"></div><div id="tt"></div><div id="mo"></div>
 
-<script>window.APP_VER='20';</script>
-<script src="incantesimi.js?v=20" defer></script>
-<script src="manuale.js?v=20" defer></script>
-<script src="app.js?v=20" defer></script>
+<script>window.APP_VER='21';</script>
+<script src="incantesimi.js?v=21" defer></script>
+<script src="manuale.js?v=21" defer></script>
+<script src="app.js?v=21" defer></script>
 <script>
+/* Aggiornamenti (come in Taccuino, dalla v21). Il service worker tiene in cache la versione installata: l'app parte subito e
+   anche offline. Quando sw.js cambia sul server il browser scarica la versione nuova in background e la mette "in attesa":
+   qui la si propone, con le novità, e si ricarica solo quando la persona tocca "Aggiorna ora". Niente ricariche a sorpresa. */
 (function(){
 var v=window.APP_VER||'';
 function chip(){try{var d=document.createElement('div');d.id='appver';d.textContent='Scheda D&D v'+v;d.style.cssText='position:fixed;right:10px;bottom:6px;font:11px system-ui,sans-serif;color:var(--mu,#667085);opacity:.75;pointer-events:none;z-index:9';document.body.appendChild(d)}catch(e){}}
 if(document.readyState=='loading')addEventListener('DOMContentLoaded',chip);else chip();
-var bn=document.createElement('div');bn.className='upd';bn.setAttribute('role','status');bn.innerHTML='<div class="upi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3l1.8 5.2L18 10l-5.2 1.8L11 17l-1.8-5.2L4 10l5.2-1.8z"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></div><div class="upt"><b>Nuova versione pronta</b><small>Novit\u00e0 e correzioni: si aggiorna in un attimo, i personaggi restano dove sono.</small></div><div class="upa"><button type="button" class="upl">Pi\u00f9 tardi</button><button type="button" class="upb">Aggiorna ora</button></div>';var bt=bn.querySelector('.upt b'),b=bn.querySelector('.upb'),later=bn.querySelector('.upl');(document.body||document.documentElement).appendChild(bn);
-var nw=null,refreshing=false,hadCtrl=false;
-function show(w){nw=w;bn.classList.add('on')}
-b.onclick=function(){if(nw)try{nw.postMessage('SKIP_WAITING')}catch(e){}bn.classList.add('go');bt.textContent='Aggiornamento in corso\u2026';b.disabled=later.disabled=true};later.onclick=function(){bn.classList.remove('on')};
-if('serviceWorker' in navigator){
- try{
-  hadCtrl=!!navigator.serviceWorker.controller;
-  navigator.serviceWorker.addEventListener('controllerchange',function(){if(!hadCtrl){hadCtrl=true;return}if(refreshing)return;refreshing=true;location.reload()});
-  var reg=null;
-  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){reg=r;r.addEventListener('updatefound',function(){var w=r.installing;if(!w)return;w.addEventListener('statechange',function(){if(w.state==='installed'&&navigator.serviceWorker.controller)show(w)})})}).catch(function(){});
-  var upd=function(){if(reg)try{reg.update()}catch(e){}};
-  addEventListener('load',upd);
-  addEventListener('focus',upd);
-  document.addEventListener('visibilitychange',function(){if(document.visibilityState=='visible')upd()});
- }catch(e){}
+var bn=document.createElement('div');bn.className='upd';bn.setAttribute('role','status');(document.body||document.documentElement).appendChild(bn);bn.dataset.ic='<div class="upi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3l1.8 5.2L18 10l-5.2 1.8L11 17l-1.8-5.2L4 10l5.2-1.8z"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></div>';
+var SW='serviceWorker' in navigator&&window.isSecureContext,reg=null,wt=null,nx=null,acc=false;
+// localStorage: a differenza di sessionStorage resta anche quando Android chiude e riapre l'app
+function ls(k,x){try{if(x===undefined)return JSON.parse(localStorage.getItem(k));if(x===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(x))}catch(e){return null}}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return'&#'+c.charCodeAt(0)+';'})}
+function info(w){return new Promise(function(res){if(!w)return res(null);var ch=new MessageChannel(),t=setTimeout(function(){res(null)},1500);ch.port1.onmessage=function(e){clearTimeout(t);res(e.data)};try{w.postMessage('info',[ch.port2])}catch(e){clearTimeout(t);res(null)}})}
+function show(){var n=nx&&nx.notes&&nx.notes.length?nx.notes:[];bn.className='upd on';bn.innerHTML='<div class="upi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3l1.8 5.2L18 10l-5.2 1.8L11 17l-1.8-5.2L4 10l5.2-1.8z"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></div><div class="upt"><b>È pronta la versione '+esc(nx.version)+'</b>'+(n.length?'<ul>'+n.map(function(x){return'<li>'+esc(x)+'</li>'}).join('')+'</ul>':'<small>Novità e correzioni pronte.</small>')+'<small>I personaggi restano dove sono. Con "Più tardi" si aggiorna da sola quando chiudi del tutto l\'app e la riapri.</small></div><div class="upa"><button type="button" class="upl">Più tardi</button><button type="button" class="upb">Aggiorna ora</button></div>';bn.querySelector('.upb').onclick=now;bn.querySelector('.upl').onclick=later}
+function offer(w){wt=w;return info(w).then(function(i){nx=i||{version:'nuova',notes:[]};var l=ls('ddUpdLater');if(l&&l.v===nx.version&&l.until>Date.now())return;show()})}
+function now(){acc=true;ls('ddUpdWant',nx&&nx.version||null);try{window.sv&&window.sv()}catch(e){}bn.classList.add('go');var t=bn.querySelector('.upt b');if(t)t.textContent='Aggiornamento in corso…';bn.querySelectorAll('button').forEach(function(x){x.disabled=true});try{wt&&wt.postMessage('skipWaiting')}catch(e){}setTimeout(function(){location.reload()},4000)}
+function later(){bn.className='upd';ls('ddUpdLater',{v:nx&&nx.version||'',until:Date.now()+864e5})}
+// per i pulsanti in "Salva e importa"
+window.ddUpd={
+ ver:function(){return SW&&navigator.serviceWorker.controller?info(navigator.serviceWorker.controller).then(function(i){return i?i.version:v}):Promise.resolve(SW?'in installazione…':'n/d (serve https)')},
+ check:function(){if(!reg)return Promise.resolve('Aggiornamenti attivi solo da https');return reg.update().then(function(){if(reg.waiting){ls('ddUpdLater',null);offer(reg.waiting);return'Trovata una nuova versione'}return reg.installing?'Trovata una nuova versione: la sto scaricando':'Hai già l\'ultima versione'},function(){return'Sei offline: riprova più tardi'})},
+ force:function(){try{window.sv&&window.sv()}catch(e){}return navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).then(function(){return caches.keys()}).then(function(ks){return Promise.all(ks.filter(function(k){return k.indexOf('scheda-dd-')==0}).map(function(k){return caches.delete(k)}))}).catch(function(){}).then(function(){location.reload()})}
+};
+if(SW){
+ navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){reg=r;
+  // una versione già scaricata (anche mentre l'app era chiusa) viene proposta subito; se era stata accettata, si completa
+  if(r.waiting&&navigator.serviceWorker.controller){var want=ls('ddUpdWant');info(r.waiting).then(function(i){if(want&&i&&want===i.version){acc=true;r.waiting.postMessage('skipWaiting')}else offer(r.waiting)})}else ls('ddUpdWant',null);
+  r.addEventListener('updatefound',function(){var w=r.installing;if(w)w.addEventListener('statechange',function(){if(w.state==='installed'&&navigator.serviceWorker.controller)offer(w)})});
+  // controlla quando l'app torna in primo piano e ogni 30 minuti
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState=='visible')r.update().catch(function(){})});
+  setInterval(function(){r.update().catch(function(){})},18e5)
+ }).catch(function(){});
+ // si ricarica solo se la persona ha detto "Aggiorna ora" (al primo avvio il service worker prende il controllo senza ricaricare)
+ // se l'aggiornamento è stato accettato in un'altra finestra, qui si propone di ricaricare (senza farlo a sorpresa)
+ navigator.serviceWorker.addEventListener('controllerchange',function(){if(acc)return location.reload();info(navigator.serviceWorker.controller).then(function(i){if(!i||i.version===v)return;bn.className='upd on';bn.innerHTML=bn.dataset.ic+'<div class="upt"><b>App aggiornata alla versione '+esc(i.version)+'</b><small>È stata aggiornata in un&#39;altra finestra: ricarica questa per usarla.</small></div><div class="upa"><button type="button" class="upl">Più tardi</button><button type="button" class="upb">Ricarica</button></div>';bn.querySelector('.upb').onclick=function(){try{window.sv&&window.sv()}catch(e){}location.reload()};bn.querySelector('.upl').onclick=function(){bn.className='upd'}})});
 }
 })();
 </script>

@@ -168,7 +168,7 @@ html.an-enter .pcl>*{animation:fUp .36s cubic-bezier(.2,.8,.2,1) both}html.an-en
 .upd{display:none;position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:99;max-width:520px;margin:auto;box-sizing:border-box;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;padding:14px;border-radius:18px;color:var(--ink);font:15px/1.35 system-ui,sans-serif;background:linear-gradient(160deg,color-mix(in srgb,var(--ac) 16%,var(--cd)),var(--cd) 60%);border:1px solid color-mix(in srgb,var(--ac) 45%,var(--ln));box-shadow:0 14px 34px #0000004d}
 .upd.on{display:grid;animation:updIn .4s cubic-bezier(.2,.8,.2,1.2) both}
 .upi{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--ac);color:var(--on-ac);animation:updGlow 2.2s ease-in-out infinite}.upi svg{width:24px;height:24px}
-.upt{display:flex;flex-direction:column;min-width:0}.upt b{font:700 1.05em var(--tf)}.upt small{color:var(--mu);font-size:.84em}
+.upt{display:flex;flex-direction:column;min-width:0}.upt ul{margin:6px 0 4px;padding-left:18px;font-size:.9em}.upt li{margin:2px 0}.upt b{font:700 1.05em var(--tf)}.upt small{color:var(--mu);font-size:.84em}
 .upa{grid-column:1/-1;display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
 .upa button{font:600 .95em system-ui,sans-serif;padding:10px 12px;border-radius:12px;cursor:pointer;border:1px solid var(--ln);background:none;color:var(--ink);transition:transform .14s,filter .14s}.upa button:active{transform:scale(.95)}
 .upa .upb{background:var(--ac);border-color:var(--ac);color:var(--on-ac);box-shadow:0 4px 14px color-mix(in srgb,var(--ac) 40%,transparent)}
